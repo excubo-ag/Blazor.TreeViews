@@ -1,10 +1,6 @@
 ﻿@page "/demo"
 
-<TreeView Items="Items" GetParent="GetParent">
-    <ItemTemplate>
-        <div style="color: red">@context</div>
-    </ItemTemplate>
-</TreeView>
+<TreeView Items="Items" GetParent="GetParent" />
 
 @code {
     private List<string> Items = new List<string>
@@ -34,7 +30,7 @@
 
 <TreeView Items="Nested" GetChildren="(item) => item.Children" SortBy="(e) => e.OrderByDescending(i => i.Self)">
     <ItemTemplate>
-        @context.Self
+        @context.Item.Self
     </ItemTemplate>
 </TreeView>
 

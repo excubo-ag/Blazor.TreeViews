@@ -1,18 +1,16 @@
 ﻿@typeparam T
 @using Excubo.Blazor.TreeViews.__Internal
 
-@if (GetParent != null)
-{
-    <OrderedListByGetParent ItemTemplate="ItemTemplate"
-                             SortBy="SortBy"
-                             Parental="Items.Where(i => GetParent(i) == null).ToList()" Remaining="Items.Where(i => GetParent(i) != null).ToList()" GetParent="GetParent" />
-}
-else if (GetChildren != null)
-{
-    <OrderedListByGetChildren ItemTemplate="ItemTemplate"
-                              SortBy="SortBy"
-                              Parental="Items" GetChildren="GetChildren" />
-}
+<CascadingValue Value="this">
+    @if (GetParent != null)
+    {
+        <OrderedListByGetParent Parental="Items.Where(i => GetParent(i) == null).ToList()" Remaining="Items.Where(i => GetParent(i) != null).ToList()" GetParent="GetParent" />
+    }
+    else if (GetChildren != null)
+    {
+        <OrderedListByGetChildren Parental="Items" GetChildren="GetChildren" />
+    }
+</CascadingValue>
 
 @code
 {
@@ -27,6 +25,6 @@ else if (GetChildren != null)
     /// Alternatively, use GetParent.
     /// </summary>
     [Parameter] public Func<T, List<T>> GetChildren { get; set; }
-    [Parameter] public RenderFragment<T> ItemTemplate { get; set; } = (item) =>@<text>@item</text>;
+    [Parameter] public RenderFragment<ItemContent<T>> ItemTemplate { get; set; } = (ItemContent<T> value) =>@<text>@value.Item</text>;
     [Parameter] public Func<IEnumerable<T>, IEnumerable<T>> SortBy { get; set; } = (e) => e;
 }
