@@ -27,4 +27,29 @@
     [Parameter] public Func<T, List<T>> GetChildren { get; set; }
     [Parameter] public RenderFragment<ItemContent<T>> ItemTemplate { get; set; } = (ItemContent<T> value) =>@<text>@value.Item</text>;
     [Parameter] public Func<IEnumerable<T>, IEnumerable<T>> SortBy { get; set; } = (e) => e;
+    [Parameter] public bool AllowSelection { get; set; }
+    [Parameter] public List<T> SelectedItems { get; set; } = new List<T>();
+    [Parameter] public EventCallback<List<T>> SelectedItemsChanged { get; set; }
+    [Parameter] public CheckboxFragment CheckboxTemplate { get; set; } = (value, value_changed) => @<DefaultCheckbox Value="value" ValueChanged="value_changed"/>;
+    internal void UpdateSelection(T item, bool? selected)
+    {
+        if (selected == null)
+        {
+            return;
+        }
+        if (SelectedItems == null)
+        {
+            SelectedItems = new List<T>();
+        }
+        if (selected == false)
+        {
+            SelectedItems.Remove(item);
+            SelectedItemsChanged.InvokeAsync(SelectedItems);
+        }
+        else if (selected == true && !SelectedItems.Contains(item))
+        {
+            SelectedItems.Add(item);
+            SelectedItemsChanged.InvokeAsync(SelectedItems);
+        }
+    }
 }

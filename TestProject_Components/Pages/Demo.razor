@@ -1,10 +1,35 @@
 ﻿@page "/demo"
 
-<TreeView Items="Items" GetParent="GetParent" />
+@code {
+    private static readonly object no_render = new object();
+    private static readonly CheckboxFragment checkbox_template =
+        (value, value_changed) =>
+            (builder) =>
+            {
+                builder.OpenComponent<MatBlazor.MatCheckbox<bool?>>(0);
+                builder.AddAttribute(1, nameof(MatBlazor.MatCheckbox<bool?>.Value), value);
+                builder.AddAttribute(2, nameof(MatBlazor.MatCheckbox<bool?>.ValueChanged), Microsoft.AspNetCore.Components.EventCallback.Factory.Create<bool?>(no_render, (v) => value_changed.Invoke(v)));
+                builder.AddAttribute(3, nameof(MatBlazor.MatCheckbox<bool?>.Indeterminate), true);
+                builder.AddEventStopPropagationAttribute(4, "onclick", true);
+                builder.CloseComponent();
+            };
+}
+
+<TreeView Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template" @bind-SelectedItems="SelectedValues" />
+
+@if (SelectedValues != null)
+{
+    @string.Join(", ", SelectedValues)
+}
+
 
 @code {
-    private List<string> Items = new List<string>
+    private List<string> SelectedValues = new List<string>
 {
+        "3.1.1"
+    };
+    private List<string> Items = new List<string>
+    {
         "1",
         "1.1",
         "1.2",
@@ -28,25 +53,25 @@
     }
 }
 
-<TreeView Items="Nested" GetChildren="(item) => item.Children" SortBy="(e) => e.OrderByDescending(i => i.Self)">
+<TreeView Items="Nested" GetChildren="(item) => item.Children" SortBy="(e) => e.OrderByDescending(i => i.Self)" AllowSelection="true" CheckboxTemplate="checkbox_template" @bind-SelectedItems="SelectedItems">
     <ItemTemplate>
         @context.Item.Self
     </ItemTemplate>
 </TreeView>
 
-@code {
-    private class Item
-    {
-        public string Self { get; set; }
-        public List<Item> Children { get; set; }
-    }
-    private List<Item> Nested = new List<Item>
+@if (SelectedItems != null)
 {
+    @string.Join(", ", SelectedItems.Select(s => s.Self))
+}
+
+@code {
+    private static readonly List<Item> AllItems = new List<Item>
+    {
         new Item
         {
             Self = "1",
             Children = new List<Item>
-    {
+            {
                 new Item
                 {
                     Self = "1.1"
@@ -65,12 +90,12 @@
         {
             Self = "3",
             Children = new List<Item>
-    {
+            {
                 new Item
                 {
                     Self = "3.1",
                     Children = new List<Item>
-            {
+                    {
                         new Item
                         {
                             Self = "3.1.1"
@@ -84,4 +109,11 @@
             }
         }
     };
+    private class Item
+    {
+        public string Self { get; set; }
+        public List<Item> Children { get; set; }
+    }
+    private List<Item> Nested = AllItems.ToList();
+    private List<Item> SelectedItems;
 }

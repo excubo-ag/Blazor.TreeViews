@@ -1,0 +1,24 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime js
+
+<input @ref="checkbox" type="checkbox" checked="@Value" @onclick="() => { Value = (Value != true); ValueChanged?.Invoke(Value); }" @onclick:stopPropagation />
+@(Value switch { true => "true", false => "false", _ => "null" })
+@code {
+    private ElementReference checkbox;
+    private bool? old_value = true;
+    [Parameter] public bool? Value { get; set; }
+    [Parameter] public Action<bool?> ValueChanged { get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (old_value != Value)
+        {
+            old_value = Value;
+            await js.InvokeVoidAsync("eval", $"document.querySelector('[_bl_{checkbox.Id}=\"\"]').indeterminate = {(Value == null ? "true" : "false")}");
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+    }
+}
