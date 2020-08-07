@@ -1,0 +1,23 @@
+﻿@typeparam T
+<OrderedList Collapsed="Collapsed">
+    @foreach (var item in SortBy(Parental))
+    {
+        var sub_items = GetChildren(item);
+        <ListItem Context="ChildCollapsed" Content="ItemTemplate(item)" HasChildren="sub_items != null && sub_items.Any()">
+            @if (sub_items != null && sub_items.Any())
+            {
+                <OrderedListByGetChildren ItemTemplate="ItemTemplate"
+                                            SortBy="SortBy"
+                                            Collapsed="ChildCollapsed"
+                                            Parental="sub_items" GetChildren="GetChildren" />
+            }
+        </ListItem>
+    }
+</OrderedList>
+@code {
+    [Parameter] public List<T> Parental { get; set; }
+    [Parameter] public Func<T, List<T>> GetChildren { get; set; }
+    [Parameter] public RenderFragment<T> ItemTemplate { get; set; }
+    [Parameter] public bool Collapsed { get; set; }
+    [Parameter] public Func<IEnumerable<T>, IEnumerable<T>> SortBy { get; set; }
+}

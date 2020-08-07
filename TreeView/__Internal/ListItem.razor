@@ -1,0 +1,15 @@
+﻿<li>
+    <div @onclick="() => Collapsed = !Collapsed">
+        <svg viewBox="0 0 16 16" stroke="@(HasChildren ? "black" : "transparent")" fill="transparent" stroke-width="2" style="height: 1em; transform: rotate(@(Collapsed ? 0 : 90)deg);">
+            <path d="M 4 2 l 7 6 l -7 6" />
+        </svg>
+        <span style="display: inline-block">@Content</span>
+    </div>
+    @ChildContent(Collapsed)
+</li>
+@code {
+    [Parameter] public RenderFragment Content { get; set; }
+    [Parameter] public RenderFragment<bool> ChildContent { get; set; }
+    [Parameter] public bool HasChildren { get; set; }
+    private bool Collapsed { get; set; }
+}

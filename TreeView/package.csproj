@@ -1,0 +1,42 @@
+<Project>
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <!--Title, Description, Tags, Product-->
+  <PropertyGroup>
+    <Title>Grid component library for Blazor</Title>
+    <Description>Excubo.Blazor.TreeViews is a Blazor component library for a lightweight grid component and dashboard component.</Description>
+    <PackageTags>blazor,html,grid,dashboard</PackageTags>
+    <Product>Excubo.Blazor.TreeViews</Product>
+  </PropertyGroup>
+  <!--Author, Company-->
+  <PropertyGroup>
+    <Authors>Stefan Lörwald</Authors>
+    <Company>excubo ag</Company>
+  </PropertyGroup>
+  <!--Repository-->
+  <PropertyGroup>
+    <PackageProjectUrl>https://github.com/excubo-ag/Blazor.TreeView</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/excubo-ag/Blazor.TreeView</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+  <!--PackageId, Version-->
+  <PropertyGroup>
+    <PackageId>Excubo.Blazor.TreeViews</PackageId>
+    <Version>1.4.0</Version>
+  </PropertyGroup>
+  <!--Self Include-->
+  <ItemGroup>
+    <None Include="package.csproj" />
+  </ItemGroup>
+  <!--Licensing-->
+  <PropertyGroup>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+</Project>

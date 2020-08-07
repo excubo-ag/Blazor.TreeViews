@@ -1,0 +1,32 @@
+﻿@typeparam T
+@using Excubo.Blazor.TreeViews.__Internal
+
+@if (GetParent != null)
+{
+    <OrderedListByGetParent ItemTemplate="ItemTemplate"
+                             SortBy="SortBy"
+                             Parental="Items.Where(i => GetParent(i) == null).ToList()" Remaining="Items.Where(i => GetParent(i) != null).ToList()" GetParent="GetParent" />
+}
+else if (GetChildren != null)
+{
+    <OrderedListByGetChildren ItemTemplate="ItemTemplate"
+                              SortBy="SortBy"
+                              Parental="Items" GetChildren="GetChildren" />
+}
+
+@code
+{
+    [Parameter] public List<T> Items { get; set; }
+    /// <summary>
+    /// If this parameter is set, the TreeView is populated by grouping items under their respective parent. Items which have no parent (null) are put at the top of the hierarchy.
+    /// Alternatively, use <cref="GetChildren" />.
+    /// </summary>
+    [Parameter] public Func<T, T> GetParent { get; set; }
+    /// <summary>
+    /// If this parameter is set, the TreeView is populated by all the items in Items, placing all children returned by this method under the respective item in the Items list.
+    /// Alternatively, use GetParent.
+    /// </summary>
+    [Parameter] public Func<T, List<T>> GetChildren { get; set; }
+    [Parameter] public RenderFragment<T> ItemTemplate { get; set; } = (item) =>@<text>@item</text>;
+    [Parameter] public Func<IEnumerable<T>, IEnumerable<T>> SortBy { get; set; } = (e) => e;
+}
