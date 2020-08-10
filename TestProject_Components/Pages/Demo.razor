@@ -8,7 +8,7 @@
             {
                 builder.OpenComponent<MatBlazor.MatCheckbox<bool?>>(0);
                 builder.AddAttribute(1, nameof(MatBlazor.MatCheckbox<bool?>.Value), value);
-                builder.AddAttribute(2, nameof(MatBlazor.MatCheckbox<bool?>.ValueChanged), Microsoft.AspNetCore.Components.EventCallback.Factory.Create<bool?>(no_render, (v) => value_changed.Invoke(v)));
+                builder.AddAttribute(2, nameof(MatBlazor.MatCheckbox<bool?>.ValueChanged), EventCallback.Factory.Create<bool?>(no_render, value_changed));
                 builder.AddAttribute(3, nameof(MatBlazor.MatCheckbox<bool?>.Indeterminate), true);
                 builder.AddEventStopPropagationAttribute(4, "onclick", true);
                 builder.CloseComponent();
