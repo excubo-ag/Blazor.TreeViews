@@ -52,3 +52,35 @@ The API should feel like you're using Blazor, not a javascript library.
 
 The non-C# part of the code of the library should be as tiny as possible. We set ourselves a maximum amount of 10kB for combined js+css.
 The current payload is 0kB.
+
+## Checkbox style from another component library
+
+It is possible to configure the checkbox style for a `TreeView` with `AllowSelection` enabled. Use the `CheckboxTemplate` parameter:
+
+```
+<TreeView Items="Items" AllowSelection="true" CheckboxTemplate="checkbox_template" />
+```
+
+Because of a [quirk in Blazor](https://github.com/dotnet/aspnetcore/issues/24655), writing the correct code for the `CheckboxTemplate` can be quite tricky.
+See below for a list of snippets of correct checkboxes in some of the common component libraries.
+If you can't find your favorite library, please consider contributing to this list.
+
+### [MatBlazor](https://github.com/SamProf/MatBlazor)
+
+```
+@code {
+    private static readonly object no_render = new object();
+    private static readonly CheckboxFragment checkbox_template =
+        (value, value_changed) =>
+            (builder) =>
+            {
+                builder.OpenComponent<MatBlazor.MatCheckbox<bool?>>(0);
+                builder.AddAttribute(1, nameof(MatBlazor.MatCheckbox<bool?>.Value), value);
+                builder.AddAttribute(2, nameof(MatBlazor.MatCheckbox<bool?>.ValueChanged), EventCallback.Factory.Create<bool?>(no_render, value_changed));
+                builder.AddAttribute(3, nameof(MatBlazor.MatCheckbox<bool?>.Indeterminate), true);
+                builder.AddEventStopPropagationAttribute(4, "onclick", true);
+                builder.CloseComponent();
+            };
+}
+```
+

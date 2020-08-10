@@ -1,0 +1,61 @@
+﻿@page "/get_children"
+
+<TreeView Items="Nested" GetChildren="(item) => item.Children">
+    <ItemTemplate>
+        @context.Item.Self
+    </ItemTemplate>
+</TreeView>
+
+@code {
+    private static readonly List<Item> AllItems = new List<Item>
+    {
+        new Item
+        {
+            Self = "1",
+            Children = new List<Item>
+            {
+                new Item
+                {
+                    Self = "1.1"
+                },
+                new Item
+                {
+                    Self = "1.2"
+                }
+            }
+        },
+        new Item
+        {
+            Self = "2"
+        },
+        new Item
+        {
+            Self = "3",
+            Children = new List<Item>
+            {
+                new Item
+                {
+                    Self = "3.1",
+                    Children = new List<Item>
+                    {
+                        new Item
+                        {
+                            Self = "3.1.1"
+                        },
+                        new Item
+                        {
+                            Self = "3.1.2"
+                        }
+                    }
+                },
+            }
+        }
+    };
+    private class Item
+    {
+        public string Self { get; set; }
+        public List<Item> Children { get; set; }
+    }
+    private List<Item> Nested = AllItems.ToList();
+    private List<Item> SelectedItems;
+}

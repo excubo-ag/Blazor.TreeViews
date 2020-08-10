@@ -57,6 +57,10 @@
             {
                 Selected = false;
             }
+            if (TreeView.InitiallyCollapsed)
+            {
+                Collapsed = true;
+            }
             Parent?.ReevaluateSelected();
         }
         base.OnAfterRender(firstRender);

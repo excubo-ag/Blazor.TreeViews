@@ -31,6 +31,7 @@
     [Parameter] public List<T> SelectedItems { get; set; } = new List<T>();
     [Parameter] public EventCallback<List<T>> SelectedItemsChanged { get; set; }
     [Parameter] public CheckboxFragment CheckboxTemplate { get; set; } = (value, value_changed) => @<DefaultCheckbox Value="value" ValueChanged="value_changed"/>;
+    [Parameter] public bool InitiallyCollapsed { get; set; }
     internal void UpdateSelection(T item, bool? selected)
     {
         if (selected == null)

@@ -1,0 +1,30 @@
+﻿@page "/initially_collapsed"
+
+<TreeView Items="Items" GetParent="GetParent" InitiallyCollapsed="true" />
+
+
+@code {
+    private List<string> Items = new List<string>
+    {
+        "1",
+        "1.1",
+        "1.2",
+        "2",
+        "3",
+        "3.1",
+        "3.1.1",
+        "3.1.2"
+    };
+    private string GetParent(string item)
+    {
+        var last_period = item.LastIndexOf('.');
+        if (last_period < 0)
+        {
+            return null; // no parent
+        }
+        else
+        {
+            return item.Substring(0, last_period);
+        }
+    }
+}

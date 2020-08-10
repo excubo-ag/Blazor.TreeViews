@@ -15,7 +15,7 @@
             };
 }
 
-<TreeView Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template" @bind-SelectedItems="SelectedValues" />
+<TreeView Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template" @bind-SelectedItems="SelectedValues" InitiallyCollapsed="true" />
 
 @if (SelectedValues != null)
 {
