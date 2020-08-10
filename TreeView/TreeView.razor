@@ -1,7 +1,7 @@
 ﻿@typeparam T
 @using Excubo.Blazor.TreeViews.__Internal
 
-<CascadingValue Value="this">
+<CascadingValue Value="this" IsFixed="true">
     @if (GetParent != null)
     {
         <OrderedListByGetParent Parental="Items.Where(i => GetParent(i) == null).ToList()" Remaining="Items.Where(i => GetParent(i) != null).ToList()" GetParent="GetParent" />
