@@ -45,6 +45,14 @@
     [CascadingParameter] private TreeView<T> TreeView { get; set; }
     [CascadingParameter] private ListItem<T> Parent { get; set; }
     protected HashSet<ListItem<T>> Children = new HashSet<ListItem<T>>();
+    protected override void OnInitialized()
+    {
+        if (TreeView.InitiallyCollapsed)
+        {
+            Collapsed = true;
+        }
+        base.OnInitialized();
+    }
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
@@ -56,10 +64,6 @@
             else
             {
                 Selected = false;
-            }
-            if (TreeView.InitiallyCollapsed)
-            {
-                Collapsed = true;
             }
             Parent?.ReevaluateSelected();
         }
