@@ -4,11 +4,15 @@
 <CascadingValue Value="this" IsFixed="true">
     @if (GetParent != null)
     {
-        <OrderedListByGetParent Parental="Items.Where(i => GetParent(i) == null).ToList()" Remaining="Items.Where(i => GetParent(i) != null).ToList()" GetParent="GetParent" />
+        var filtered = FilterBy(Items);
+        var root_elements = filtered.Where(i => GetParent(i) == null).ToList();
+        var non_root_elements = filtered.Where(i => GetParent(i) != null).ToList();
+        <OrderedListByGetParent Parental="root_elements" Remaining="non_root_elements" GetParent="GetParent" />
     }
     else if (GetChildren != null)
     {
-        <OrderedListByGetChildren Parental="Items" GetChildren="GetChildren" />
+        var filtered = FilterBy(Items).ToList();
+        <OrderedListByGetChildren Parental="filtered" GetChildren="GetChildren" />
     }
 </CascadingValue>
 
@@ -27,6 +31,7 @@
     [Parameter] public Func<T, List<T>> GetChildren { get; set; }
     [Parameter] public RenderFragment<ItemContent<T>> ItemTemplate { get; set; } = (ItemContent<T> value) =>@<text>@value.Item</text>;
     [Parameter] public Func<IEnumerable<T>, IEnumerable<T>> SortBy { get; set; } = (e) => e;
+    [Parameter] public Func<IEnumerable<T>, IEnumerable<T>> FilterBy { get; set; } = (e) => e;
     [Parameter] public bool AllowSelection { get; set; }
     [Parameter] public List<T> SelectedItems { get; set; } = new List<T>();
     [Parameter] public EventCallback<List<T>> SelectedItemsChanged { get; set; }

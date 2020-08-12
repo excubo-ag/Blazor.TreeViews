@@ -4,7 +4,7 @@
 <OrderedList Collapsed="Collapsed">
     @foreach (var item in SortBy(Parental))
     {
-        var sub_items = GetChildren(item);
+        var sub_items = FilterBy(GetChildren(item)).ToList();
         <ListItem Context="ChildCollapsed" Item="item" Level="Level" HasChildren="sub_items != null && sub_items.Any()">
             @if (sub_items != null && sub_items.Any())
             {

@@ -8,7 +8,7 @@
         {
             @CheckboxTemplate(Selected, SelectedChanged)
         }
-        <span style="display: inline-block">@ItemTemplate((Level, Item))</span>
+        <span style="display: inline-block; vertical-align: middle;">@ItemTemplate((Level, Item))</span>
     </div>
     <CascadingValue Value="this" IsFixed="true">
         @ChildContent(Collapsed)
