@@ -1,0 +1,70 @@
+﻿@page "/item_template"
+
+<TreeView Items="Nested" GetChildren="(item) => item.Children">
+    <ItemTemplate>
+        <div style="color: @context.Item.Color">@context.Item.Self</div>
+    </ItemTemplate>
+</TreeView>
+
+@code {
+    private static readonly List<Item> AllItems = new List<Item>
+{
+        new Item
+        {
+            Self = "1",
+            Color = "red",
+            Children = new List<Item>
+            {
+                new Item
+                {
+                    Self = "1.1",
+                    Color = "green"
+                },
+                new Item
+                {
+                    Self = "1.2",
+                    Color = "orange"
+                }
+            }
+        },
+        new Item
+        {
+            Self = "2",
+            Color = "blue"
+        },
+        new Item
+        {
+            Self = "3",
+            Color = "forestgreen",
+            Children = new List<Item>
+            {
+                new Item
+                {
+                    Self = "3.1",
+                    Color = "forestgreen",
+                    Children = new List<Item>
+                    {
+                        new Item
+                        {
+                            Self = "3.1.1",
+                            Color = "forestgreen"
+                        },
+                        new Item
+                        {
+                            Self = "3.1.2",
+                            Color = "forestgreen"
+                        }
+                    }
+                },
+            }
+        }
+    };
+    private class Item
+    {
+        public string Self { get; set; }
+        public string Color { get; set; }
+        public List<Item> Children { get; set; }
+    }
+    private List<Item> Nested = AllItems.ToList();
+    private List<Item> SelectedItems;
+}
