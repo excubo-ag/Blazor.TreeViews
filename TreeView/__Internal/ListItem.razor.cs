@@ -7,6 +7,11 @@ namespace Excubo.Blazor.TreeViews.__Internal
 {
     public partial class ListItem<T> : ComponentBase
     {
+        [Parameter] public T Item { get; set; }
+        [Parameter] public int Level { get; set; }
+        [Parameter] public RenderFragment<bool> ChildContent { get; set; }
+        [Parameter] public bool HasChildren { get; set; }
+
         private bool? selected;
         private bool? Selected
         {
@@ -101,10 +106,6 @@ namespace Excubo.Blazor.TreeViews.__Internal
         private RenderFragment<ItemContent<T>> ItemTemplate => TreeView.ItemTemplate;
         private CheckboxFragment CheckboxTemplate => TreeView.CheckboxTemplate;
         private bool AllowSelection => TreeView.AllowSelection;
-        [Parameter] public T Item { get; set; }
-        [Parameter] public int Level { get; set; }
-        [Parameter] public RenderFragment<bool> ChildContent { get; set; }
-        [Parameter] public bool HasChildren { get; set; }
         private bool Collapsed { get; set; }
     }
 }
