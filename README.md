@@ -4,7 +4,7 @@
 ![Nuget](https://img.shields.io/nuget/dt/Excubo.Blazor.TreeViews)
 ![GitHub](https://img.shields.io/github/license/excubo-ag/Blazor.TreeViews)
 
-Excubo.Blazor.TreeView is a native-Blazor tree-view component.
+Excubo.Blazor.TreeViews is a native-Blazor tree-view component.
 
 [Demo on github.io using Blazor Webassembly](https://excubo-ag.github.io/Blazor.TreeViews/)
 
