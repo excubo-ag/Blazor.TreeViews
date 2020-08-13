@@ -2,7 +2,7 @@
 
 @code {
     private static readonly object no_render = new object();
-    private static readonly CheckboxFragment checkbox_template =
+    private static readonly CheckboxFragment checkbox_template_matblazor =
         (value, value_changed) =>
             (builder) =>
             {
@@ -15,7 +15,7 @@
             };
 }
 
-<TreeView Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template" @bind-SelectedItems="SelectedValues" />
+<TreeView Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template_matblazor" @bind-SelectedItems="SelectedValues" />
 
 @code {
     private List<string> SelectedValues = new List<string>
