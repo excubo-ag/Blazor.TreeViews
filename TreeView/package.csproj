@@ -4,9 +4,9 @@
   </PropertyGroup>
   <!--Title, Description, Tags, Product-->
   <PropertyGroup>
-    <Title>Grid component library for Blazor</Title>
-    <Description>Excubo.Blazor.TreeViews is a Blazor component library for a lightweight grid component and dashboard component.</Description>
-    <PackageTags>blazor,html,grid,dashboard</PackageTags>
+    <Title>TreeView component library for Blazor</Title>
+    <Description>Excubo.Blazor.TreeViews is a Blazor component library for tree views.</Description>
+    <PackageTags>blazor,html,treeview</PackageTags>
     <Product>Excubo.Blazor.TreeViews</Product>
   </PropertyGroup>
   <!--Author, Company-->
@@ -23,7 +23,7 @@
   <!--PackageId, Version-->
   <PropertyGroup>
     <PackageId>Excubo.Blazor.TreeViews</PackageId>
-    <Version>1.4.0</Version>
+    <Version>1.0.0</Version>
   </PropertyGroup>
   <!--Self Include-->
   <ItemGroup>

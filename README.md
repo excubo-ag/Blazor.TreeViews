@@ -1,35 +1,33 @@
-## Excubo.Blazor.TreeView
+## Excubo.Blazor.TreeViews
 
-![Nuget](https://img.shields.io/nuget/v/Excubo.Blazor.TreeView)
-![Nuget](https://img.shields.io/nuget/dt/Excubo.Blazor.TreeView)
-![GitHub](https://img.shields.io/github/license/excubo-ag/Blazor.TreeView)
+![Nuget](https://img.shields.io/nuget/v/Excubo.Blazor.TreeViews)
+![Nuget](https://img.shields.io/nuget/dt/Excubo.Blazor.TreeViews)
+![GitHub](https://img.shields.io/github/license/excubo-ag/Blazor.TreeViews)
 
-Excubo.Blazor.TreeView is a native-Blazor tree-view component
+Excubo.Blazor.TreeView is a native-Blazor tree-view component.
 
-[Demo on github.io using Blazor Webassembly](https://excubo-ag.github.io/Blazor.TreeView/)
-
-## Key features
+[Demo on github.io using Blazor Webassembly](https://excubo-ag.github.io/Blazor.TreeViews/)
 
 ## How to use
 
-### 1. Install the nuget package Excubo.Blazor.TreeView
+### 1. Install the nuget package Excubo.Blazor.TreeViews
 
-Excubo.Blazor.TreeView is distributed [via nuget.org](https://www.nuget.org/packages/Excubo.Blazor.TreeView/).
-![Nuget](https://img.shields.io/nuget/v/Excubo.Blazor.TreeView)
+Excubo.Blazor.TreeViews is distributed [via nuget.org](https://www.nuget.org/packages/Excubo.Blazor.TreeViews/).
+![Nuget](https://img.shields.io/nuget/v/Excubo.Blazor.TreeViews)
 
 #### Package Manager:
 ```ps
-Install-Package Excubo.Blazor.TreeView -Version 1.0.0
+Install-Package Excubo.Blazor.TreeViews -Version 1.0.0
 ```
 
 #### .NET Cli:
 ```cmd
-dotnet add package Excubo.Blazor.TreeView --version 1.0.0
+dotnet add package Excubo.Blazor.TreeViews --version 1.0.0
 ```
 
 #### Package Reference
 ```xml
-<PackageReference Include="Excubo.Blazor.TreeView" Version="1.0.0" />
+<PackageReference Include="Excubo.Blazor.TreeViews" Version="1.0.0" />
 ```
 
 ### 2. Add the `TreeView` component to your app
@@ -40,7 +38,7 @@ dotnet add package Excubo.Blazor.TreeView --version 1.0.0
 <TreeView Items="Items" />
 ```
 
-Have a look at the fully working examples provided in [the sample project](https://github.com/excubo-ag/Blazor.TreeView/tree/master/TestProject_Components).
+Have a look at the fully working examples provided in [the sample project](https://github.com/excubo-ag/Blazor.TreeViews/tree/main/TestProject_Components).
 
 ## Design principles
 
