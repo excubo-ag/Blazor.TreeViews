@@ -27,7 +27,7 @@ jobs:
       uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
       with:
         html_path: app/publish/wwwroot/index.html
-        base_href: /Blazor.TreeView/
+        base_href: /Blazor.TreeViews/
     - name: add .nojekyll
       run: touch app/publish/wwwroot/.nojekyll
     - name: write git commit id
