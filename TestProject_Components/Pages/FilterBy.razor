@@ -1,8 +1,13 @@
 ﻿@page "/filter"
 
-<TreeView Items="Items" GetParent="GetParent" FilterBy='(e) => e.Where(v => v != "3.1" && v != "1.2" && v != "2")' />
+Select what's filtered:
+<TreeView Items="Items" GetParent="(_) => null" AllowSelection="true" @bind-SelectedItems="SelectedValues" />
 
 @code {
+    private List<string> SelectedValues = new List<string>
+    {
+        "3.1.1"
+    };
     private List<string> Items = new List<string>
     {
         "1",
@@ -27,3 +32,6 @@
         }
     }
 }
+
+Remaining is:
+<TreeView Items="Items" GetParent="GetParent" FilterBy='(e) => e.Where(v => !SelectedValues.Contains(v))' />
