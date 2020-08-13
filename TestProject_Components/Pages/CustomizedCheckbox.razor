@@ -1,48 +1,11 @@
 ﻿@page "/customized_checkbox"
 
-@code {
-    private static readonly object no_render = new object();
-    private static readonly CheckboxFragment checkbox_template_matblazor =
-        (value, value_changed) =>
-            (builder) =>
-            {
-                builder.OpenComponent<MatBlazor.MatCheckbox<bool?>>(0);
-                builder.AddAttribute(1, nameof(MatBlazor.MatCheckbox<bool?>.Value), value);
-                builder.AddAttribute(2, nameof(MatBlazor.MatCheckbox<bool?>.ValueChanged), EventCallback.Factory.Create<bool?>(no_render, value_changed));
-                builder.AddAttribute(3, nameof(MatBlazor.MatCheckbox<bool?>.Indeterminate), true);
-                builder.AddEventStopPropagationAttribute(4, "onclick", true);
-                builder.CloseComponent();
-            };
-}
-
-<TreeView Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template_matblazor" @bind-SelectedItems="SelectedValues" />
-
-@code {
-    private List<string> SelectedValues = new List<string>
+<CustomizedCheckbox_MatBlazor />
+<hr />
+@if (false)
 {
-        "3.1.1"
-    };
-    private List<string> Items = new List<string>
-    {
-        "1",
-        "1.1",
-        "1.2",
-        "2",
-        "3",
-        "3.1",
-        "3.1.1",
-        "3.1.2"
-    };
-    private string GetParent(string item)
-    {
-        var last_period = item.LastIndexOf('.');
-        if (last_period < 0)
-        {
-            return null; // no parent
-        }
-        else
-        {
-            return item.Substring(0, last_period);
-        }
-    }
+    <CustomizedCheckbox_BlazorMdc />
+    <hr />
 }
+
+Your favorite component library is not included yet? Please consider contributing! (Note that only frameworks that provide a free license can be included in the demo)
