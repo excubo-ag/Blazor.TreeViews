@@ -1,8 +1,8 @@
 ## Excubo.Blazor.TreeViews
 
-![Nuget](https://img.shields.io/nuget/v/Excubo.Blazor.TreeViews)
-![Nuget](https://img.shields.io/nuget/dt/Excubo.Blazor.TreeViews)
-![GitHub](https://img.shields.io/github/license/excubo-ag/Blazor.TreeViews)
+[![Nuget](https://img.shields.io/nuget/v/Excubo.Blazor.TreeViews)](https://www.nuget.org/packages/Excubo.Blazor.TreeViews/)
+[![Nuget](https://img.shields.io/nuget/dt/Excubo.Blazor.TreeViews)](https://www.nuget.org/packages/Excubo.Blazor.TreeViews/)
+[![GitHub](https://img.shields.io/github/license/excubo-ag/Blazor.TreeViews)](https://github.com/excubo-ag/Blazor.TreeViews/)
 
 Excubo.Blazor.TreeViews is a native-Blazor tree-view component.
 
@@ -13,7 +13,7 @@ Excubo.Blazor.TreeViews is a native-Blazor tree-view component.
 ### 1. Install the nuget package Excubo.Blazor.TreeViews
 
 Excubo.Blazor.TreeViews is distributed [via nuget.org](https://www.nuget.org/packages/Excubo.Blazor.TreeViews/).
-![Nuget](https://img.shields.io/nuget/v/Excubo.Blazor.TreeViews)
+[![Nuget](https://img.shields.io/nuget/v/Excubo.Blazor.TreeViews)](https://www.nuget.org/packages/Excubo.Blazor.TreeViews/)
 
 #### Package Manager:
 ```ps
