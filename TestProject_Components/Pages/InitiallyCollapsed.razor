@@ -1,11 +1,12 @@
 ﻿@page "/initially_collapsed"
+<SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(InitiallyCollapsed)" />
 
 <TreeView Items="Items" GetParent="GetParent" InitiallyCollapsed="true" />
 
 
 @code {
     private List<string> Items = new List<string>
-    {
+{
         "1",
         "1.1",
         "1.2",
