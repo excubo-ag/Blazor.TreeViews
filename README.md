@@ -65,7 +65,7 @@ If you can't find your favorite library, please consider contributing to this li
 
 ### [MatBlazor](https://github.com/SamProf/MatBlazor)
 
-```
+```cs
 @code {
     private static readonly object no_render = new object();
     private static readonly CheckboxFragment checkbox_template =
@@ -82,3 +82,22 @@ If you can't find your favorite library, please consider contributing to this li
 }
 ```
 
+### [BlazorMdc](https://github.com/BlazorMdc/BlazorMdc)
+
+```cs
+@code {
+    private static readonly object no_render = new object();
+    private static readonly CheckboxFragment checkbox_template_blazor_mdc =
+    CheckboxFragmentConverter.ToCheckboxFragment((value, indeterminate, value_changed, indeterminate_changed) =>
+        (builder) =>
+        {
+            builder.OpenComponent<BlazorMdc.MTCheckbox>(0);
+            builder.AddAttribute(1, nameof(BlazorMdc.MTCheckbox.Value), value);
+            builder.AddAttribute(2, nameof(BlazorMdc.MTCheckbox.ValueChanged), EventCallback.Factory.Create<bool>(no_render, value_changed));
+            builder.AddAttribute(3, nameof(BlazorMdc.MTCheckbox.IsIndeterminate), indeterminate);
+            builder.AddAttribute(4, nameof(BlazorMdc.MTCheckbox.IsIndeterminateChanged), EventCallback.Factory.Create<bool>(no_render, indeterminate_changed));
+            builder.AddEventStopPropagationAttribute(7, "onclick", true);
+            builder.CloseComponent();
+        });
+}
+```
