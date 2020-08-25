@@ -2,8 +2,8 @@
 {
     public struct ItemContent<T>
     {
-        public int Level { get; set; }
-        public T Item { get; set; }
+        public int Level { get; }
+        public T Item { get; }
         public ItemContent(int level, T item)
         {
             Level = level;

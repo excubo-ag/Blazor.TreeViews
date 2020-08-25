@@ -1,0 +1,53 @@
+﻿@page "/collapse_from_code"
+<SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(CollapseFromCode)" />
+
+<TreeView Items="Items" GetParent="GetParent">
+    <ItemTemplate>
+        <Collapse @bind-Value="@context.Item.Collapsed" />
+        @context.Item.Value (@(context.Item.Collapsed ? "collapsed" : "expanded"))
+    </ItemTemplate>
+</TreeView>
+
+<button @onclick="() => { Items.First().Collapsed = !Items.First().Collapsed; }">Toggle expansion state of first item</button>
+
+@code {
+    private class Item
+    {
+        public string Value { get; set; }
+        public bool Collapsed { get; set; } = true;
+        public Item(string v)
+        {
+            Value = v;
+        }
+        public Item((string value, bool state) t)
+        {
+            Value = t.value;
+            Collapsed = t.state;
+        }
+        public static implicit operator Item(string v) => new Item(v);
+        public static implicit operator Item((string value, bool state) t) => new Item(t);
+    }
+    private List<Item> Items = new List<Item>
+    {
+        "1",
+        "1.1",
+        "1.2",
+        "2",
+        ("3", false),
+        ("3.1", false),
+        "3.1.1",
+        "3.1.2"
+    };
+    private Item GetParent(Item item)
+    {
+        var last_period = item.Value.LastIndexOf('.');
+        if (last_period < 0)
+        {
+            return null; // no parent
+        }
+        else
+        {
+            return Items.FirstOrDefault(v => v.Value == item.Value.Substring(0, last_period));
+        }
+    }
+}
