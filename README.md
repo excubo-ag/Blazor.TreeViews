@@ -17,17 +17,17 @@ Excubo.Blazor.TreeViews is distributed [via nuget.org](https://www.nuget.org/pac
 
 #### Package Manager:
 ```ps
-Install-Package Excubo.Blazor.TreeViews -Version 1.1.0
+Install-Package Excubo.Blazor.TreeViews -Version 1.1.1
 ```
 
 #### .NET Cli:
 ```cmd
-dotnet add package Excubo.Blazor.TreeViews --version 1.1.0
+dotnet add package Excubo.Blazor.TreeViews --version 1.1.1
 ```
 
 #### Package Reference
 ```xml
-<PackageReference Include="Excubo.Blazor.TreeViews" Version="1.1.0" />
+<PackageReference Include="Excubo.Blazor.TreeViews" Version="1.1.1" />
 ```
 
 ### 2. Add the `TreeView` component to your app
