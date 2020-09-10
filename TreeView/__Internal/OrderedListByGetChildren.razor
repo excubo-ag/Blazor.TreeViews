@@ -5,7 +5,7 @@
     @foreach (var item in SortBy(Parental))
     {
         <ListItem Context="ChildCollapsed" Item="item" Level="Level" HasChildren="HasChildrenItem(item)">
-            @if (!ChildCollapsed && HasChildrenItem(item))
+            @if (!ChildCollapsed)
             {
                 var sub_items = GetChildren(item);
                 sub_items = sub_items == null ? null : FilterBy(sub_items).ToList();
