@@ -1,4 +1,4 @@
-﻿@typeparam T
+@typeparam T
 @using Excubo.Blazor.TreeViews.__Internal
 
 <CascadingValue Value="this" IsFixed="true">
@@ -13,7 +13,7 @@
     {
         if (HasChildren != null) {InitiallyCollapsed = true;}
         var filtered = FilterBy(Items).ToList();
-        <OrderedListByGetChildren Parental="filtered" GetChildren="GetChildren" HasChildren="HasChildren"/>
+        <OrderedListByGetChildren Parental="filtered" GetChildren="GetChildren" HasChildrenItem="HasChildren"/>
     }
 </CascadingValue>
 
