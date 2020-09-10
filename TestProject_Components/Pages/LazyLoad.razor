@@ -1,0 +1,30 @@
+﻿@page "/lazy"
+<SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(LazyLoad)" />
+
+<TreeView Items="_rootItem" GetChildren="GetChildren" HasChildren="HasChildren">
+    <ItemTemplate>
+        @context.Item.Self
+    </ItemTemplate>
+</TreeView>
+
+@code {
+
+    private class Item
+    {
+        public string Self { get; set; }
+    }
+
+    private List<Item> SelectedItems;
+
+    private List<Item> _rootItem = new List<Item> { new Item { Self = "1" } };
+
+    private List<Item> GetChildren(Item item)
+    {
+        return new List<Item> { new Item { Self = item.Self + 1 } };
+    }
+
+    private bool HasChildren(Item item)
+    {
+        return true;
+    }
+}
