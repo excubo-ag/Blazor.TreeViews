@@ -7,7 +7,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
 {
     public class OrderedListBase<T> : ComponentBase
     {
-        [CascadingParameter] private TreeView<T> TreeView { get; set; }
+        [CascadingParameter] protected TreeView<T> TreeView { get; set; }
         protected RenderFragment<ItemContent<T>> ItemTemplate => TreeView.ItemTemplate;
         protected Func<IEnumerable<T>, IEnumerable<T>> FilterBy => TreeView.FilterBy;
         protected Func<IEnumerable<T>, IEnumerable<T>> SortBy => TreeView.SortBy;
