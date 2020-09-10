@@ -8,7 +8,6 @@
 </TreeView>
 
 @code {
-
     private class Item
     {
         public string Self { get; set; }
@@ -16,15 +15,21 @@
 
     private List<Item> SelectedItems;
 
-    private List<Item> _rootItem = new List<Item> { new Item { Self = "1" } };
+    private List<Item> _rootItem = new List<Item> { new Item { Self = "1" }, new Item { Self = "2" } };
 
     private List<Item> GetChildren(Item item)
     {
-        return new List<Item> { new Item { Self = item.Self + 1 } };
+        if (item.Self.Length < 100)
+        {
+            return new List<Item> { new Item { Self = item.Self + "1" }, new Item { Self = item.Self + "2" } };
+        }
+        else
+        {
+            return null;
+        }
     }
-
     private bool HasChildren(Item item)
     {
-        return true;
+        return (item.Self.Length < 100);
     }
 }
