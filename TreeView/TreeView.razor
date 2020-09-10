@@ -1,4 +1,4 @@
-@typeparam T
+﻿@typeparam T
 @using Excubo.Blazor.TreeViews.__Internal
 
 <CascadingValue Value="this" IsFixed="true">
@@ -11,7 +11,16 @@
     }
     else if (GetChildren != null)
     {
-        if (HasChildren != null) {InitiallyCollapsed = true;}
+        if (HasChildren != null) {InitiallyCollapsed = true;} // Collapse all if we want lazy loading, else we'll load everything at first
+        else
+        {
+            // In general case, we stay with default HasChildren behaviour
+            HasChildren = item =>
+            {
+                var childItem = GetChildren(item);
+                return childItem != null && childItem.Any();
+            };
+        }
         var filtered = FilterBy(Items).ToList();
         <OrderedListByGetChildren Parental="filtered" GetChildren="GetChildren" HasChildrenItem="HasChildren"/>
     }
