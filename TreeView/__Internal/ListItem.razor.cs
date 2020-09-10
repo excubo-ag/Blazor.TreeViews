@@ -44,6 +44,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 Collapsed = true;
             }
+            Selected = Parent?.Selected;
             base.OnInitialized();
         }
         protected override void OnAfterRender(bool firstRender)
