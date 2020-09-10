@@ -5,7 +5,7 @@
     @foreach (var item in SortBy(Parental))
     {
         var sub_items = FilterBy(Remaining.Where(i => GetParent(i)?.Equals(item) == true)).ToList();
-        <ListItem Context="ChildCollapsed" Item="item" Level="Level" HasChildrenItem="sub_items.Any()">
+        <ListItem Context="ChildCollapsed" Item="item" Level="Level" HasChildren="sub_items.Any()">
             @if (sub_items.Any())
             {
                 <OrderedListByGetParent Level="Level + 1"
