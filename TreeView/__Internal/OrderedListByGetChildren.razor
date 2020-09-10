@@ -4,14 +4,14 @@
 <OrderedList Collapsed="Collapsed">
     @foreach (var item in SortBy(Parental))
     {
-        var sub_items = GetChildren(item);
-        sub_items = sub_items == null ? null : FilterBy(sub_items).ToList();
-        <ListItem Context="ChildCollapsed" Item="item" Level="Level" HasChildren="sub_items != null && sub_items.Any()">
-            @if (sub_items != null && sub_items.Any())
+        <ListItem Context="ChildCollapsed" Item="item" Level="Level" HasChildren="HasChildren(item)">
+            @if (!ChildCollapsed && HasChildren(item))
             {
+                var sub_items = GetChildren(item);
+                sub_items = sub_items == null ? null : FilterBy(sub_items).ToList();
                 <OrderedListByGetChildren Level="Level + 1"
                                           Collapsed="ChildCollapsed"
-                                          Parental="sub_items" GetChildren="GetChildren" />
+                                          Parental="sub_items" GetChildren="GetChildren" HasChildren="HasChildren"/>
             }
         </ListItem>
     }
@@ -19,4 +19,5 @@
 @code {
     [Parameter] public List<T> Parental { get; set; }
     [Parameter] public Func<T, List<T>> GetChildren { get; set; }
+    [Parameter] public Func<T, bool> HasChildren { get; set; }
 }

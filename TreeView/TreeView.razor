@@ -11,8 +11,9 @@
     }
     else if (GetChildren != null)
     {
+        if (HasChildren != null) {InitiallyCollapsed = true;}
         var filtered = FilterBy(Items).ToList();
-        <OrderedListByGetChildren Parental="filtered" GetChildren="GetChildren" />
+        <OrderedListByGetChildren Parental="filtered" GetChildren="GetChildren" HasChildren="HasChildren"/>
     }
 </CascadingValue>
 
@@ -32,6 +33,10 @@
     /// Alternatively, use <see cref="GetParent"/>.
     /// </summary>
     [Parameter] public Func<T, List<T>> GetChildren { get; set; }
+    /// <summary>
+    /// If this parameter is set, the TreeView will be populate based on the result of this method
+    /// </summary>
+    [Parameter] public Func<T, bool> HasChildren { get; set; }
     /// <summary>
     /// Controls how each item is displayed. Defaults to printing the item itself.
     /// </summary>
