@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +44,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 Collapsed = true;
             }
+            Selected = Parent?.Selected;
             base.OnInitialized();
         }
         protected override void OnAfterRender(bool firstRender)

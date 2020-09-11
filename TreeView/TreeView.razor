@@ -33,6 +33,10 @@
     /// </summary>
     [Parameter] public Func<T, List<T>> GetChildren { get; set; }
     /// <summary>
+    /// If this parameter is set, the TreeView will be populate based on the result of this method. Only works in conjunction with <see cref="GetChildren" />, not with <see cref="GetParent"/>.
+    /// </summary>
+    [Parameter] public Func<T, bool> HasChildren { get; set; }
+    /// <summary>
     /// Controls how each item is displayed. Defaults to printing the item itself.
     /// </summary>
     [Parameter] public RenderFragment<ItemContent<T>> ItemTemplate { get; set; } = (ItemContent<T> value) =>@<text>@value.Item</text>;
@@ -84,5 +88,22 @@
             SelectedItems.Add(item);
             SelectedItemsChanged.InvokeAsync(SelectedItems);
         }
+    }
+    protected override void OnParametersSet()
+    {
+        if (HasChildren != null)
+        {
+            InitiallyCollapsed = true; // Collapse all if we want lazy loading, else we'll load everything at first
+        }
+        else
+        {
+            // In general case, we stay with default HasChildren behaviour
+            HasChildren = item =>
+            {
+                var childItem = GetChildren(item);
+                return childItem != null && childItem.Any();
+            };
+        }
+        base.OnParametersSet();
     }
 }
