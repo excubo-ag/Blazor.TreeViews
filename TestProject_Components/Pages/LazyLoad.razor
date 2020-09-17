@@ -13,8 +13,6 @@
         public string Self { get; set; }
     }
 
-    private List<Item> SelectedItems;
-
     private List<Item> _rootItem = new List<Item> { new Item { Self = "1" }, new Item { Self = "2" } };
 
     private List<Item> GetChildren(Item item)
