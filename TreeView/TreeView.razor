@@ -1,6 +1,11 @@
 ﻿@typeparam T
 @using Excubo.Blazor.TreeViews.__Internal
 
+@if (Items == null)
+{
+    return;
+}
+
 <CascadingValue Value="this" IsFixed="true">
     @if (GetParent != null)
     {
@@ -64,46 +69,64 @@
     /// Controls the display of the checkbox. Requires <see cref="AllowSelection"/> to be set to true. Defaults to a pure HTML checkbox.
     /// </summary>
     [Parameter] public CheckboxFragment CheckboxTemplate { get; set; } = (value, value_changed) => @<DefaultCheckbox Value="value" ValueChanged="value_changed"/>;
-    /// <summary>
-    /// When set to true, all items are initially collapsed.
-    /// </summary>
-    [Parameter] public bool InitiallyCollapsed { get; set; }
-    internal void UpdateSelection(T item, bool? selected)
-    {
-        if (selected == null)
+        /// <summary>
+        /// When set to true, all items are initially collapsed.
+        /// </summary>
+        [Parameter] public bool InitiallyCollapsed { get; set; }
+        internal void UpdateSelection(T item, bool? selected)
         {
-            return;
-        }
-        if (SelectedItems == null)
-        {
-            SelectedItems = new List<T>();
-        }
-        if (selected == false)
-        {
-            SelectedItems.Remove(item);
-            SelectedItemsChanged.InvokeAsync(SelectedItems);
-        }
-        else if (selected == true && !SelectedItems.Contains(item))
-        {
-            SelectedItems.Add(item);
-            SelectedItemsChanged.InvokeAsync(SelectedItems);
-        }
-    }
-    protected override void OnParametersSet()
-    {
-        if (HasChildren != null)
-        {
-            InitiallyCollapsed = true; // Collapse all if we want lazy loading, else we'll load everything at first
-        }
-        else
-        {
-            // In general case, we stay with default HasChildren behaviour
-            HasChildren = item =>
+            if (selected == null)
             {
-                var childItem = GetChildren(item);
-                return childItem != null && childItem.Any();
-            };
+                return;
+            }
+            if (SelectedItems == null)
+            {
+                SelectedItems = new List<T>();
+            }
+            if (selected == false)
+            {
+                SelectedItems.Remove(item);
+                InvokeAsync(async () =>
+                {
+                    try
+                    {
+                        await SelectedItemsChanged.InvokeAsync(SelectedItems);
+                    }
+                    catch
+                    {
+                    }
+                });
+            }
+            else if (selected == true && !SelectedItems.Contains(item))
+            {
+                SelectedItems.Add(item);
+                InvokeAsync(async () =>
+                {
+                    try
+                    {
+                        await SelectedItemsChanged.InvokeAsync(SelectedItems);
+                    }
+                    catch
+                    {
+                    }
+                });
+            }
         }
-        base.OnParametersSet();
+        protected override void OnParametersSet()
+        {
+            if (HasChildren != null)
+            {
+                InitiallyCollapsed = true; // Collapse all if we want lazy loading, else we'll load everything at first
+            }
+            else
+            {
+                // In general case, we stay with default HasChildren behaviour
+                HasChildren = item =>
+                {
+                    var childItem = GetChildren(item);
+                    return childItem != null && childItem.Any();
+                };
+            }
+            base.OnParametersSet();
+        }
     }
-}

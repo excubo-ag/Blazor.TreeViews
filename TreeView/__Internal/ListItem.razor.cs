@@ -5,25 +5,10 @@ using System.Linq;
 
 namespace Excubo.Blazor.TreeViews.__Internal
 {
-    public partial class ListItem<T>
+    public partial class ListItem<T> : IDisposable
     {
         [Parameter] public T Item { get; set; }
-        private bool? selected;
-        private bool? Selected
-        {
-            get => selected;
-            set
-            {
-                if (value == selected)
-                {
-                    return;
-                }
-                selected = value;
-                SelectedChanged(selected);
-                TreeView.UpdateSelection(Item, Selected);
-                StateHasChanged();
-            }
-        }
+        private bool? Selected { get; set; }
         private void SelectedChanged(bool? value)
         {
             if (value == Selected)
@@ -31,10 +16,12 @@ namespace Excubo.Blazor.TreeViews.__Internal
                 return;
             }
             Selected = value;
+            OnSelectedChanged?.Invoke(Selected);
             Parent?.ReevaluateSelected();
-            OnSelectedChanged?.Invoke(this, Selected);
+            TreeView.UpdateSelection(Item, Selected);
+            InvokeAsync(StateHasChangedIfNotDisposed);
         }
-        protected event EventHandler<bool?> OnSelectedChanged;
+        protected event Action<bool?> OnSelectedChanged;
         [CascadingParameter] private TreeView<T> TreeView { get; set; }
         [CascadingParameter] private ListItem<T> Parent { get; set; }
         protected HashSet<ListItem<T>> Children = new HashSet<ListItem<T>>();
@@ -44,7 +31,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 Collapsed = true;
             }
-            Selected = Parent?.Selected;
+            SelectedChanged(Parent?.Selected);
             base.OnInitialized();
         }
         protected override void OnAfterRender(bool firstRender)
@@ -53,11 +40,11 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 if (TreeView.SelectedItems != null && TreeView.SelectedItems.Contains(Item))
                 {
-                    Selected = true;
+                    SelectedChanged(true);
                 }
                 else
                 {
-                    Selected = false;
+                    SelectedChanged(false);
                 }
                 Parent?.ReevaluateSelected();
             }
@@ -69,23 +56,17 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 if (Parent.Children.Add(this))
                 {
-                    Parent.OnSelectedChanged += (object _, bool? new_value) =>
-                    {
-                        if (new_value == null)
-                        {
-                            return;
-                        }
-                        Selected = new_value;
-                        OnSelectedChanged?.Invoke(this, Selected);
-                        StateHasChanged();
-                    };
+                    Parent.OnSelectedChanged += ReactOnSelectedChanged;
                 }
             }
             base.OnParametersSet();
         }
         protected void ReevaluateSelected()
         {
-            // of course we have at least one child! this method is only called from children.
+            if (!Children.Any())
+            {
+                return;
+            }
             // The state of this needs to be indeterminate if
             // - at least one child is indeterminate, OR
             // - at least two children differ in state
@@ -96,12 +77,43 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 return;
             }
-            Selected = state;
-            StateHasChanged();
-            Parent?.ReevaluateSelected();
+            SelectedChanged(state);
         }
         private RenderFragment<ItemContent<T>> ItemTemplate => TreeView.ItemTemplate;
         private CheckboxFragment CheckboxTemplate => TreeView.CheckboxTemplate;
         private bool AllowSelection => TreeView.AllowSelection;
+        private bool disposed;
+        private void StateHasChangedIfNotDisposed()
+        {
+            if (!disposed)
+            {
+                try
+                {
+                    StateHasChanged();
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+        }
+        private void ReactOnSelectedChanged(bool? new_value)
+        {
+            if (new_value == null)
+            {
+                return;
+            }
+            SelectedChanged(new_value);
+        }
+        public void Dispose()
+        {
+            disposed = true;
+            if (Parent != null)
+            {
+                Parent.OnSelectedChanged -= ReactOnSelectedChanged;
+                Parent.Children.Remove(this);
+            }
+            SelectedChanged(false); 
+        }
     }
 }

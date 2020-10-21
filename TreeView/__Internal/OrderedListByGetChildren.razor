@@ -4,7 +4,7 @@
 <OrderedList Collapsed="Collapsed">
     @foreach (var item in SortBy(Parental))
     {
-        <ListItem Context="ChildCollapsed" Item="item" Level="Level" HasChildren="TreeView.HasChildren(item)">
+        <ListItem @key="item" Context="ChildCollapsed" Item="item" Level="Level" HasChildren="TreeView.HasChildren(item)">
             @if (!ChildCollapsed)
             {
                 var sub_items = GetChildren(item);
