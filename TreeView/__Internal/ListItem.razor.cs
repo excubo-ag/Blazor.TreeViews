@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Excubo.Blazor.TreeViews.__Internal
 {
-    public partial class ListItem<T> : IDisposable
+    public partial class ListItem<T> : ListItemBase, IDisposable
     {
         [Parameter] public T Item { get; set; }
         private bool? Selected { get; set; }

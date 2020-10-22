@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Components;
 
 namespace Excubo.Blazor.TreeViews
 {
+    [Excubo.Generators.Blazor.GenerateSetParametersAsync]
     /// <summary>
     /// This is a helper to interact with the list items collapse/expand state.
     /// Bind any boolean value to this, e.g. context.Item.Collapsed
     /// </summary>
-    public class Collapse : ComponentBase
+    public partial class Collapse : ComponentBase
     {
         [Parameter] public bool Value { get; set; }
         [Parameter] public EventCallback<bool> ValueChanged { get; set; }
