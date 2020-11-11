@@ -113,7 +113,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
                 Parent.OnSelectedChanged -= ReactOnSelectedChanged;
                 Parent.Children.Remove(this);
             }
-            SelectedChanged(false); 
+            SelectedChanged(false);
         }
     }
 }
