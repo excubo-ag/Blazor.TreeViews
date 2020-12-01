@@ -10,7 +10,7 @@ on:
 
 jobs:
   build_and_deploy:
-    if: "!contains(github.event.head_commit.message, '[deploy]')"
+    if: "contains(github.event.head_commit.message, '[deploy]')"
     runs-on: ubuntu-latest
 
     steps:
