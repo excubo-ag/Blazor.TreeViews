@@ -103,20 +103,25 @@ namespace Excubo.Blazor.TreeViews
                 });
             }
         }
+        private bool has_children_initialized;
         protected override void OnParametersSet()
         {
-            if (HasChildren != null)
+            if (!has_children_initialized)
             {
-                InitiallyCollapsed = true; // Collapse all if we want lazy loading, else we'll load everything at first
-            }
-            else
-            {
-                // In general case, we stay with default HasChildren behaviour
-                HasChildren = item =>
+                if (HasChildren != null)
                 {
-                    var childItem = GetChildren(item);
-                    return childItem != null && childItem.Any();
-                };
+                    InitiallyCollapsed = true; // Collapse all if we want lazy loading, else we'll load everything at first
+                }
+                else
+                {
+                    // In general case, we stay with default HasChildren behaviour
+                    HasChildren = item =>
+                    {
+                        var childItem = GetChildren(item);
+                        return childItem != null && childItem.Any();
+                    };
+                }
+                has_children_initialized = true;
             }
             base.OnParametersSet();
         }

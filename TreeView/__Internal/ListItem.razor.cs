@@ -31,7 +31,8 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 Collapsed = true;
             }
-            SelectedChanged(Parent?.Selected);
+            var this_should_be_selected = Parent?.Selected == true || TreeView.SelectedItems?.Contains(Item) == true;
+            SelectedChanged(this_should_be_selected);
             base.OnInitialized();
         }
         protected override void OnAfterRender(bool firstRender)
