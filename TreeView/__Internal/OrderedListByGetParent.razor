@@ -1,7 +1,7 @@
 ﻿@typeparam T
 @inherits OrderedListBase<T>
 
-<OrderedList Collapsed="Collapsed">
+<OrderedList Collapsed="Collapsed" Class="@Class">
     @foreach (var item in SortBy(Parental))
     {
         var sub_items = FilterBy(Remaining.Where(i => GetParent(i)?.Equals(item) == true)).ToList();

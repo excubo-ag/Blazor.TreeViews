@@ -1,11 +1,20 @@
 ﻿@page "/item_template"
 <SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(CustomItemTemplate)" />
 
-<TreeView Items="Nested" GetChildren="(item) => item.Children">
+<TreeView Items="Nested" GetChildren="(item) => item.Children" ListClass="stronger-indent" ItemClass="red-border">
     <ItemTemplate>
         <div style="color: @context.Item.Color">@context.Item.Self</div>
     </ItemTemplate>
 </TreeView>
+<style>
+    .stronger-indent {
+        padding-inline-start: 2em;
+    }
+
+    .red-border {
+        border: 1px solid red;
+    }
+</style>
 
 @code {
     private static readonly List<Item> AllItems = new List<Item>

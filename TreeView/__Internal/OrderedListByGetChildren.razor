@@ -1,7 +1,7 @@
 ﻿@typeparam T
 @inherits OrderedListBase<T>
 
-<OrderedList Collapsed="Collapsed">
+<OrderedList Collapsed="Collapsed" Class="@Class">
     @foreach (var item in SortBy(Parental))
     {
         <ListItem @key="item" Context="ChildCollapsed" Item="item" Level="Level" HasChildren="TreeView.HasChildren(item)">

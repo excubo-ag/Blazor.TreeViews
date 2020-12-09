@@ -11,6 +11,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
         protected RenderFragment<ItemContent<T>> ItemTemplate => TreeView.ItemTemplate;
         protected Func<IEnumerable<T>, IEnumerable<T>> FilterBy => TreeView.FilterBy;
         protected Func<IEnumerable<T>, IEnumerable<T>> SortBy => TreeView.SortBy;
+        protected string Class => TreeView?.ListClass;
         [Parameter] public int Level { get; set; }
         [Parameter] public bool Collapsed { get; set; }
         protected override void BuildRenderTree(RenderTreeBuilder builder)

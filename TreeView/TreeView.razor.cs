@@ -31,6 +31,14 @@ namespace Excubo.Blazor.TreeViews
         /// </summary>
         [Parameter] public RenderFragment<ItemContent<T>> ItemTemplate { get; set; } = (ItemContent<T> value) => (builder) => builder.AddContent(0, @value.Item);
         /// <summary>
+        /// Optional class(es) that are applied to every &lt;ul&gt; tag in the tree view.
+        /// </summary>
+        [Parameter] public string ListClass { get; set; }
+        /// <summary>
+        /// Optional class(es) that are applied to every &lt;li&gt; tag in the tree view.
+        /// </summary>
+        [Parameter] public string ItemClass { get; set; }
+        /// <summary>
         /// Controls in which order the items are displayed. Sorting affects each level.
         /// </summary>
         [Parameter] public Func<IEnumerable<T>, IEnumerable<T>> SortBy { get; set; } = (e) => e;

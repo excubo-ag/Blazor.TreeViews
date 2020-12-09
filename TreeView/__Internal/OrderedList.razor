@@ -1,5 +1,6 @@
-﻿<ul style="display: @(Collapsed ? "none" : "block"); list-style-type: none; padding-inline-start: .5em">@ChildContent</ul>
+﻿<ul class="default-tree-view-ul @Class" style="display: @(Collapsed ? "none" : "block");">@ChildContent</ul>
 @code {
     [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public string Class { get; set; }
     [Parameter] public bool Collapsed { get; set; }
 }
