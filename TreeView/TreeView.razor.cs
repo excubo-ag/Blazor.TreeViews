@@ -112,10 +112,12 @@ namespace Excubo.Blazor.TreeViews
             }
         }
         private bool has_children_initialized;
+        internal bool IsLazyLoading;
         protected override void OnParametersSet()
         {
             if (!has_children_initialized)
             {
+                IsLazyLoading = HasChildren != null;
                 if (HasChildren != null)
                 {
                     InitiallyCollapsed = true; // Collapse all if we want lazy loading, else we'll load everything at first

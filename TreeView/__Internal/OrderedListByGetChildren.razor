@@ -5,15 +5,17 @@
     @foreach (var item in SortBy(Parental))
     {
         <ListItem @key="item" Context="ChildCollapsed" Item="item" Level="Level" HasChildren="TreeView.HasChildren(item)">
-            @if (!ChildCollapsed)
-            {
+            @{
                 var sub_items = GetChildren(item);
                 sub_items = sub_items == null ? null : FilterBy(sub_items).ToList();
                 if (sub_items != null)
                 {
-                    <OrderedListByGetChildren Level="Level + 1"
-                                              Collapsed="ChildCollapsed"
-                                              Parental="sub_items" GetChildren="GetChildren"/>
+                    if (!TreeView.IsLazyLoading || !ChildCollapsed)
+                    {
+                        <OrderedListByGetChildren Level="Level + 1"
+                                                  Collapsed="ChildCollapsed"
+                                                  Parental="sub_items" GetChildren="GetChildren" />
+                    }
                 }
             }
         </ListItem>
