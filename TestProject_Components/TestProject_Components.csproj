@@ -4,10 +4,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BlazorMdc" Version="1.0.0-Preview.13" />
-    <PackageReference Include="Excubo.Blazor.Grids" Version="2.0.21" />
+    <PackageReference Include="Excubo.Blazor.Grids" Version="2.0.25" />
     <PackageReference Include="MatBlazor" Version="2.8.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TreeView\Blazor.TreeView.csproj" />
