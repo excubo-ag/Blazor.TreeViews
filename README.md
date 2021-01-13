@@ -84,6 +84,8 @@ If you can't find your favorite library, please consider contributing to this li
 
 ### [BlazorMdc](https://github.com/BlazorMdc/BlazorMdc)
 
+(deprecated)
+
 ```cs
 @code {
     private static readonly object no_render = new object();
