@@ -1,0 +1,28 @@
+﻿@page "/markup"
+<SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(Markup)" />
+
+This kind of tree view is different, because the definition of items is done purely via markup, not by providing any items as a list.
+
+<MarkupTreeView InitiallyCollapsed="true">
+    <Item Label="Item 1">
+        <Item Label="Item 1.1">
+        </Item>
+        <Item Label="Item 1.2">
+        </Item>
+        <Item Label="Item 1.3">
+        </Item>
+        <Item Label="Item 1.4">
+        </Item>
+    </Item>
+    <Item Label="Item 2">
+        <Item Label="Item 2.1">
+            <Item Label="Item 2.1.1">
+            </Item>
+            <Item Label="Item 2.1.2">
+            </Item>
+            <Item Label="Item 2.1.3">
+            </Item>
+        </Item>
+    </Item>
+</MarkupTreeView>
+
