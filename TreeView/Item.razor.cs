@@ -13,6 +13,7 @@ namespace Excubo.Blazor.TreeViews
         [CascadingParameter] public Item Parent { get; set; }
         [Parameter] public string Label { get; set; }
         [Parameter] public RenderFragment ChildContent { get; set; }
+        [Parameter] public bool ContentIsCollapsable { get; set; }
         private bool Collapsed { get; set; }
         internal readonly HashSet<Item> Children = new HashSet<Item>();
         protected override void OnInitialized()
