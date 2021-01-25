@@ -1,0 +1,31 @@
+﻿@typeparam T
+@inherits OrderedListBase<T>
+
+<OrderedList Collapsed="Collapsed">
+    @foreach (var item in Items)
+    {
+        <ListItem Context="ChildCollapsed" Item="item" Level="Level" HasChildren="HasChildren">
+            @if (!ChildCollapsed)
+            {
+                <OrderedListByGetChildrenAsync Level="Level + 1"
+                                               Collapsed="ChildCollapsed"
+                                               Parental="item" GetChildrenAsync="GetChildrenAsync" />
+            }
+        </ListItem>
+    }
+</OrderedList>
+
+@code {
+    [Parameter] public T Parental { get; set; }
+    [Parameter] public Func<T, Task<List<T>>> GetChildrenAsync { get; set; }
+
+    List<T> Items { get; set; } = new List<T>();
+    bool HasChildren { get; set; } = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Items = await GetChildrenAsync(Parental);
+        HasChildren = await AsyncTreeView.HasChildrenAsync(Parental);
+    }
+
+}
