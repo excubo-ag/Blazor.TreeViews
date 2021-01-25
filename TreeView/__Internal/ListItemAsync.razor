@@ -1,0 +1,29 @@
+﻿@typeparam T
+@inherits ListItemBase
+<li>
+    <div @onclick="() => { Collapsed = !Collapsed; CollapsedChanged?.Invoke(); }">
+        @if (ChildLoading)
+        {
+            @LoadChildrenTemplate
+        }
+        else
+        {
+            <svg viewBox="0 0 16 16" style="height: 1em; transform: rotate(@(Collapsed ? 0 : 90)deg);">
+                <path d="M 4 2 l 7 6 l -7 6" stroke="@(HasChildren ? "black" : "transparent")" fill="transparent" stroke-width="2" />
+            </svg>
+        }
+
+        @if (AllowSelection)
+        {
+            @CheckboxTemplate(Selected, SelectedChanged)
+        }
+        <span style="display: inline-block; vertical-align: middle;">
+            <CascadingValue Value="this" IsFixed="true">
+                @ItemTemplate((Level, Item))
+            </CascadingValue>
+        </span>
+    </div>
+    <CascadingValue Value="this" IsFixed="true">
+        @ChildContent(Collapsed)
+    </CascadingValue>
+</li>

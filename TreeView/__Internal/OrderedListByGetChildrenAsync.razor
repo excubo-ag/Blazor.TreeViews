@@ -1,17 +1,17 @@
 ﻿@typeparam T
-@inherits OrderedListBase<T>
+@inherits OrderedListAsyncBase<T>
 
 <OrderedList Collapsed="Collapsed">
     @foreach (var item in Items)
     {
-        <ListItem Context="ChildCollapsed" Item="item" Level="Level" HasChildren="HasChildren" CollapsedChanged="(c) => CollapsedChanged(c)">
+        <ListItemAsync Context="ChildCollapsed" Item="item" Level="Level" HasChildren="HasChildren" ChildLoading="@ChildLoading" CollapseHasChanged="(c) => CollapsedChanged(c)">
             @if (!ChildCollapsed)
             {
                 <OrderedListByGetChildrenAsync Level="Level + 1"
                                                Collapsed="ChildCollapsed"
                                                Parental="item" GetChildrenAsync="GetChildrenAsync" />
             }
-        </ListItem>
+        </ListItemAsync>
     }
 </OrderedList>
 
@@ -22,6 +22,7 @@
     List<T> Items { get; set; } = new List<T>();
     bool HasChildren { get; set; } = false;
     bool ChildLoaded { get; set; } = false;
+    bool ChildLoading { get; set; } = false;
 
     void CollapsedChanged(bool collapsed)
     {
@@ -31,8 +32,8 @@
     protected override async Task OnParametersSetAsync()
     {
         if (ChildLoaded) return;
-        Items = await GetChildrenAsync(Parental);
-        HasChildren = await AsyncTreeView.HasChildrenAsync(Parental);
+        Items = SortBy(FilterBy(await GetChildrenAsync(Parental))).ToList();
+        HasChildren = await TreeViewAsync.HasChildrenAsync(Parental);
         ChildLoaded = true;
     }
 }

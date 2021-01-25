@@ -1,0 +1,35 @@
+﻿@page "/asynchronous_tree_view"
+<SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(AsynchronousTreeView)" />
+
+<TreeViewAsync RootItem="root" GetChildrenAsync="GetChildrenAsync" HasChildrenAsync="HasChildrenAsync">
+    <ItemTemplate>
+        @context.Item.Self
+    </ItemTemplate>
+    <LoadingTemplate>
+        a
+    </LoadingTemplate>
+</TreeViewAsync>
+
+@code {
+    private Item root = new Item { Self = "A" };
+
+    private async Task<List<Item>> GetChildrenAsync(Item i)
+    {
+        await Task.Delay(100);
+        char c = (char)i.Self[0];
+        char next = (char)(c + 1);
+        return new List<Item> { new Item { Self = next.ToString() }};
+    }
+
+    private async Task<bool> HasChildrenAsync(Item i)
+    {
+        await Task.Delay(100);
+        return i.Self != "E";
+    }
+
+    private class Item
+    {
+        public string Self { get; set; }
+        public List<Item> Children { get; set; } = new List<Item>();
+    }
+}

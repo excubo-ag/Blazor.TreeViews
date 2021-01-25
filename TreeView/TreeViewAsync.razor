@@ -6,40 +6,57 @@
 </CascadingValue>
 
 @code {
-    [Parameter] public T RootItem { get; set; }
 
-    [Parameter] public Func<T, Task<List<T>>> GetChildrenAsync { get; set; }
+    [Parameter]
+    public T RootItem { get; set; }
 
-    [Parameter] public Func<T, Task<bool>> HasChildrenAsync { get; set; }
+    [Parameter]
+    public Func<T, Task<List<T>>> GetChildrenAsync { get; set; }
 
-    [Parameter] public RenderFragment<ItemContent<T>> ItemTemplate { get; set; }
+    [Parameter]
+    public Func<T, Task<bool>> HasChildrenAsync { get; set; }
 
-    [Parameter] public RenderFragment LoadingTemplate { get; set; }
+    [Parameter]
+    public RenderFragment<ItemContent<T>> ItemTemplate { get; set; }
+
+    [Parameter]
+    public RenderFragment LoadingTemplate { get; set; }
+
     /// <summary>
     /// Controls in which order the items are displayed. Sorting affects each level.
     /// </summary>
-    [Parameter] public Func<IEnumerable<T>, IEnumerable<T>> SortBy { get; set; } = (e) => e;
+    [Parameter]
+    public Func<IEnumerable<T>, IEnumerable<T>> SortBy { get; set; } = (e) => e;
+
     /// <summary>
     /// Controls which items are ignored. When an item is filtered, it and all its children are not displayed.
     /// </summary>
-    [Parameter] public Func<IEnumerable<T>, IEnumerable<T>> FilterBy { get; set; } = (e) => e;
+    [Parameter]
+    public Func<IEnumerable<T>, IEnumerable<T>> FilterBy { get; set; } = (e) => e;
+
     /// <summary>
     /// When set to true, checkboxes are displayed.
     /// </summary>
-    [Parameter] public bool AllowSelection { get; set; }
+    [Parameter]
+    public bool AllowSelection { get; set; }
+
     /// <summary>
     /// The items that should have a checked checkbox next to them. Requires <see cref="AllowSelection"/> to be set to true.
     /// </summary>
-    [Parameter] public List<T> SelectedItems { get; set; } = new List<T>();
+    [Parameter]
+    public List<T> SelectedItems { get; set; } = new List<T>();
+
     /// <summary>
     /// Callback for when the selection of items changes by user interaction. Requires <see cref="AllowSelection"/> to be set to true.
     /// </summary>
-    [Parameter] public EventCallback<List<T>> SelectedItemsChanged { get; set; }
+    [Parameter]
+    public EventCallback<List<T>> SelectedItemsChanged { get; set; }
+
     /// <summary>
     /// Controls the display of the checkbox. Requires <see cref="AllowSelection"/> to be set to true. Defaults to a pure HTML checkbox.
     /// </summary>
     [Parameter]
-    public CheckboxFragment CheckboxTemplate { get; set; } = (value, value_changed) =>@<DefaultCheckbox Value="value" ValueChanged="value_changed" />;
+    public CheckboxFragment CheckboxTemplate { get; set; } = (value, value_changed) => @<DefaultCheckbox Value="value" ValueChanged="value_changed"/>;
 
     internal void UpdateSelection(T item, bool? selected)
     {
@@ -62,4 +79,5 @@
             SelectedItemsChanged.InvokeAsync(SelectedItems);
         }
     }
+
 }
