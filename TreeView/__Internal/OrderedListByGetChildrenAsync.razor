@@ -4,7 +4,7 @@
 <OrderedList Collapsed="Collapsed">
     @foreach (var item in Items)
     {
-        <ListItem Context="ChildCollapsed" Item="item" Level="Level" HasChildren="HasChildren">
+        <ListItem Context="ChildCollapsed" Item="item" Level="Level" HasChildren="HasChildren" CollapsedChanged="(c) => CollapsedChanged(c)">
             @if (!ChildCollapsed)
             {
                 <OrderedListByGetChildrenAsync Level="Level + 1"
@@ -21,11 +21,18 @@
 
     List<T> Items { get; set; } = new List<T>();
     bool HasChildren { get; set; } = false;
+    bool ChildLoaded { get; set; } = false;
+
+    void CollapsedChanged(bool collapsed)
+    {
+        if (collapsed) ChildLoaded = false;
+    }
 
     protected override async Task OnParametersSetAsync()
     {
+        if (ChildLoaded) return;
         Items = await GetChildrenAsync(Parental);
         HasChildren = await AsyncTreeView.HasChildrenAsync(Parental);
+        ChildLoaded = true;
     }
-
 }

@@ -9,6 +9,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
         [Parameter] public RenderFragment<bool> ChildContent { get; set; }
         [Parameter] public bool HasChildren { get; set; }
         internal bool Collapsed { get; set; }
-        internal Action CollapsedChanged { get; set; }
+        [Parameter]
+        public EventCallback<bool> CollapsedChanged { get; set; }
     }
 }
