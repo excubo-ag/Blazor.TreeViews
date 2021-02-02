@@ -4,12 +4,12 @@
 <OrderedList Collapsed="Collapsed">
     @foreach (var item in Items)
     {
-        <ListItem Context="ChildCollapsed" Item="item" Level="Level" LoadingChild="LoadingChild" HasChildren="HasChildren" CollapseHasChanged="(c) => CollapsedChanged(c)">
+        <ListItem Context="ChildCollapsed" Item="item" Level="Level" LoadingChild="LoadingChildren" HasChildren="HasChildren">
             @if (!ChildCollapsed)
             {
                 <OrderedListByGetChildrenAsync Level="Level + 1"
                                                Collapsed="ChildCollapsed"
-                                               Parental="item" GetChildrenAsync="GetChildrenAsync" Loading="(loading) => {if (!loading) LoadingChild = false;}"/>
+                                               Parental="item" GetChildrenAsync="GetChildrenAsync" Loading="(loading) => LoadingChanged(loading)"/>
             }
         </ListItem>
     }
@@ -27,11 +27,11 @@
 
     List<T> Items { get; set; } = new List<T>();
     bool HasChildren { get; set; } = false;
-    bool LoadingChild { get; set; } = false;
+    bool LoadingChildren { get; set; } = false;
 
-    void CollapsedChanged(bool collapsed)
+    void LoadingChanged(bool loading)
     {
-        if (!collapsed) LoadingChild = true;
+        LoadingChildren = loading;
     }
 
     protected override async Task OnInitializedAsync()
