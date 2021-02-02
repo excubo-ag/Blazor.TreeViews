@@ -26,8 +26,12 @@ namespace Excubo.Blazor.TreeViews.__Internal
         [CascadingParameter] private ListItem<T> Parent { get; set; }
         protected HashSet<ListItem<T>> Children = new HashSet<ListItem<T>>();
         private string Class => TreeView?.ItemClass;
+        [Parameter] public EventCallback<bool> CollapseHasChanged { get; set; }
+        [Parameter] public bool LoadingChild { get; set; }
+
         protected override void OnInitialized()
         {
+            CollapsedChanged = async () => { await CollapseHasChanged.InvokeAsync(Collapsed); };
             if (TreeView.InitiallyCollapsed)
             {
                 Collapsed = true;
@@ -117,5 +121,6 @@ namespace Excubo.Blazor.TreeViews.__Internal
             }
             SelectedChanged(false);
         }
+        protected RenderFragment LoadChildrenTemplate => (TreeView as TreeViewAsync<T>)?.LoadingTemplate;
     }
 }

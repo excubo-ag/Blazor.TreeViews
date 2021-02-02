@@ -1,17 +1,18 @@
 ﻿@page "/asynchronous_tree_view"
 <SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(AsynchronousTreeView)" />
 
-<TreeViewAsync RootItem="root" GetChildrenAsync="GetChildrenAsync" HasChildrenAsync="HasChildrenAsync">
+<TreeViewAsync RootItem="root" GetChildrenAsync="GetChildrenAsync" HasChildrenAsync="HasChildrenAsync" AllowSelection="true" SelectedItems="SelectedItems">
     <ItemTemplate>
         @context.Item.Self
     </ItemTemplate>
-    @* <LoadingTemplate> *@
-    @*     O *@
-    @* </LoadingTemplate> *@
+    @* <LoadingTemplate> 
+         O 
+    </LoadingTemplate> *@
 </TreeViewAsync>
 
 @code {
     private Item root = new Item { Self = "A" };
+    private List<Item> SelectedItems { get; set; }
 
     private async Task<List<Item>> GetChildrenAsync(Item i)
     {
