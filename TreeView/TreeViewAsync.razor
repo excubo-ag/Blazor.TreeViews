@@ -20,7 +20,7 @@
     public RenderFragment<ItemContent<T>> ItemTemplate { get; set; }
 
     [Parameter]
-    public RenderFragment LoadingTemplate { get; set; }
+    public RenderFragment LoadingTemplate { get; set; } = @<DefaultLoadingTemplate/>;
 
     /// <summary>
     /// Controls in which order the items are displayed. Sorting affects each level.
