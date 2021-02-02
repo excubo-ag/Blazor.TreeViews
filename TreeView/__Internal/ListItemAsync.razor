@@ -2,9 +2,9 @@
 @inherits ListItemBase
 <li>
     <div @onclick="() => { Collapsed = !Collapsed; CollapsedChanged?.Invoke(); }">
-        @if (ChildLoading)
+        @if (LoadingChild)
         {
-            @LoadChildrenTemplate
+             @LoadChildrenTemplate 
         }
         else
         {

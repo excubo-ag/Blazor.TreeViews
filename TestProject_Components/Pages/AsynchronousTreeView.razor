@@ -6,7 +6,7 @@
         @context.Item.Self
     </ItemTemplate>
     <LoadingTemplate>
-        a
+        O
     </LoadingTemplate>
 </TreeViewAsync>
 
@@ -15,7 +15,7 @@
 
     private async Task<List<Item>> GetChildrenAsync(Item i)
     {
-        await Task.Delay(100);
+        await Task.Delay(1000);
         char c = (char)i.Self[0];
         char next = (char)(c + 1);
         return new List<Item> { new Item { Self = next.ToString() }};
@@ -23,7 +23,7 @@
 
     private async Task<bool> HasChildrenAsync(Item i)
     {
-        await Task.Delay(100);
+        await Task.Delay(1000);
         return i.Self != "E";
     }
 

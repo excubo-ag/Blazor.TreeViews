@@ -4,36 +4,44 @@
 <OrderedList Collapsed="Collapsed">
     @foreach (var item in Items)
     {
-        <ListItemAsync Context="ChildCollapsed" Item="item" Level="Level" HasChildren="HasChildren" ChildLoading="@ChildLoading" CollapseHasChanged="(c) => CollapsedChanged(c)">
+        <ListItemAsync Context="ChildCollapsed" Item="item" Level="Level" LoadingChild="LoadingChild" HasChildren="HasChildren" CollapseHasChanged="(c) => CollapsedChanged(c)">
             @if (!ChildCollapsed)
             {
                 <OrderedListByGetChildrenAsync Level="Level + 1"
                                                Collapsed="ChildCollapsed"
-                                               Parental="item" GetChildrenAsync="GetChildrenAsync" />
+                                               Parental="item" GetChildrenAsync="GetChildrenAsync" Loading="(loading) => {if (!loading) LoadingChild = false;}"/>
             }
         </ListItemAsync>
     }
 </OrderedList>
 
 @code {
-    [Parameter] public T Parental { get; set; }
-    [Parameter] public Func<T, Task<List<T>>> GetChildrenAsync { get; set; }
+    [Parameter]
+    public T Parental { get; set; }
+
+    [Parameter]
+    public Func<T, Task<List<T>>> GetChildrenAsync { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> Loading { get; set; }
 
     List<T> Items { get; set; } = new List<T>();
     bool HasChildren { get; set; } = false;
-    bool ChildLoaded { get; set; } = false;
-    bool ChildLoading { get; set; } = false;
+    bool ChildLoaded { get; set; } = true;
+    bool LoadingChild { get; set; } = false;
 
     void CollapsedChanged(bool collapsed)
     {
         if (collapsed) ChildLoaded = false;
+        else LoadingChild = true;
     }
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
-        if (ChildLoaded) return;
+        await Loading.InvokeAsync(true);
         Items = SortBy(FilterBy(await GetChildrenAsync(Parental))).ToList();
         HasChildren = await TreeViewAsync.HasChildrenAsync(Parental);
-        ChildLoaded = true;
+        await Loading.InvokeAsync(false);
     }
+
 }
