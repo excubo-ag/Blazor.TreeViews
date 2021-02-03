@@ -5,12 +5,19 @@
     <ItemTemplate>
         @context.Item.Self
     </ItemTemplate>
-    @* <LoadingTemplate> 
-         O 
-    </LoadingTemplate> *@
 </TreeViewAsync>
 
-@code {
+<h4>Custom loading template</h4>
+<TreeViewAsync RootItem="root" GetChildrenAsync="GetChildrenAsync" HasChildrenAsync="HasChildrenAsync" AllowSelection="true" SelectedItems="SelectedItems">
+    <ItemTemplate>
+        @context.Item.Self
+    </ItemTemplate>
+    <LoadingTemplate>
+        Loading...
+    </LoadingTemplate>
+</TreeViewAsync>
+
+@code { 
     private Item root = new Item { Self = "A" };
     private List<Item> SelectedItems { get; set; }
 
@@ -19,7 +26,7 @@
         await Task.Delay(1000);
         char c = (char)i.Self[0];
         char next = (char)(c + 1);
-        return new List<Item> { new Item { Self = next.ToString() }};
+        return new List<Item> { new Item { Self = next.ToString() } };
     }
 
     private async Task<bool> HasChildrenAsync(Item i)
@@ -32,5 +39,5 @@
     {
         public string Self { get; set; }
         public List<Item> Children { get; set; } = new List<Item>();
-    }
+    } 
 }
