@@ -5,24 +5,3 @@
 <CascadingValue Value="this" IsFixed="true">
     <OrderedListByGetChildrenAsync Parental="RootItem" GetChildrenAsync="GetChildrenAsync"/>
 </CascadingValue>
-
-@code {
-
-    [Parameter]
-    public T RootItem { get; set; }
-
-    [Parameter]
-    public Func<T, Task<List<T>>> GetChildrenAsync { get; set; }
-
-    [Parameter]
-    public Func<T, Task<bool>> HasChildrenAsync { get; set; }
-
-    [Parameter]
-    public RenderFragment LoadingTemplate { get; set; } = @<DefaultLoadingTemplate/>;
-
-    protected override void OnParametersSet()
-    {
-        InitiallyCollapsed = true;
-        base.OnParametersSet();
-    }
-}
