@@ -14,9 +14,5 @@ namespace Excubo.Blazor.TreeViews.__Internal
         protected string Class => TreeView?.ListClass;
         [Parameter] public int Level { get; set; }
         [Parameter] public bool Collapsed { get; set; }
-        protected override void BuildRenderTree(RenderTreeBuilder builder)
-        {
-            base.BuildRenderTree(builder);
-        }
     }
 }
