@@ -4,7 +4,7 @@
 <OrderedList Collapsed="Collapsed">
     @foreach (var item in Items)
     {
-        <ListItem Context="ChildCollapsed" Item="item" Level="Level" LoadingChild="LoadingChildren" HasChildren="HasChildren">
+        <ListItem @key="item" Context="ChildCollapsed" Item="item" Level="Level" LoadingChild="LoadingChildren" HasChildren="HasChildren">
             @if (!ChildCollapsed)
             {
                 <OrderedListByGetChildrenAsync Level="Level + 1"
