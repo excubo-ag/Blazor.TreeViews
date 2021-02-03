@@ -9,21 +9,18 @@
             {
                 <OrderedListByGetChildrenAsync Level="Level + 1"
                                                Collapsed="ChildCollapsed"
-                                               Parental="item" GetChildrenAsync="GetChildrenAsync" Loading="(loading) => LoadingChanged(loading)"/>
+                                               Parental="item" GetChildrenAsync="GetChildrenAsync" Loading="(loading) => LoadingChanged(loading)" />
             }
         </ListItem>
     }
 </OrderedList>
 
-@code {
-    [Parameter]
-    public T Parental { get; set; }
+@code { 
+    [Parameter] public T Parental { get; set; }
 
-    [Parameter]
-    public Func<T, Task<List<T>>> GetChildrenAsync { get; set; }
+    [Parameter] public Func<T, Task<List<T>>> GetChildrenAsync { get; set; }
 
-    [Parameter]
-    public EventCallback<bool> Loading { get; set; }
+    [Parameter] public EventCallback<bool> Loading { get; set; }
 
     List<T> Items { get; set; } = new List<T>();
     bool HasChildren { get; set; } = false;
@@ -40,6 +37,5 @@
         Items = SortBy(FilterBy(await GetChildrenAsync(Parental))).ToList();
         HasChildren = await TreeViewAsync.HasChildrenAsync(Parental);
         await Loading.InvokeAsync(false);
-    }
-
+    } 
 }
