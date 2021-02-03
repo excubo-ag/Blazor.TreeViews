@@ -2,6 +2,12 @@
 @inherits TreeViewBase<T>
 @using Excubo.Blazor.TreeViews.__Internal
 
+<style>
+    .default-tree-view-ul {
+        list-style-type: none;
+        padding-inline-start: .5em;
+    }
+</style>
 <CascadingValue Value="this" IsFixed="true">
     <OrderedListByGetChildrenAsync Parental="RootItem" GetChildrenAsync="GetChildrenAsync"/>
 </CascadingValue>
