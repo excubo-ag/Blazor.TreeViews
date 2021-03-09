@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Excubo.Blazor.TreeViews
 {
-    public class TreeViewBase<T> : ComponentBase
+    public partial class TreeViewBase<T> : ComponentBase
     {
         /// <summary>
         /// Controls how each item is displayed. Defaults to printing the item itself.

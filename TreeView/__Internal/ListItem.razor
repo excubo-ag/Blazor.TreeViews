@@ -1,15 +1,14 @@
 ﻿@typeparam T
 @inherits ListItemBase
 <li class="@Class">
-    <div style="@(HasChildren ? "cursor: pointer" : "")" @onclick="() => { Collapsed = !Collapsed;CollapsedChanged ? .Invoke(); }">
     <div style="@(HasChildren ? "cursor: pointer" : "")" @onclick="() => { Collapsed = !Collapsed; CollapsedChanged?.Invoke(); }">
         @if (LoadingChild)
         {
             @LoadChildrenTemplate
         }
         else
-            <svg viewBox="0 0 16 16" style="height: 1em; transform: rotate(@(Collapsed ? 0 : 90)deg);">
         {
+            <svg viewBox="0 0 16 16" style="height: 1em; transform: rotate(@(Collapsed ? 0 : 90)deg);">
                 <path d="M 4 2 l 7 6 l -7 6" stroke="@(HasChildren ? "black" : "transparent")" fill="transparent" stroke-width="2" />
             </svg>
         }
