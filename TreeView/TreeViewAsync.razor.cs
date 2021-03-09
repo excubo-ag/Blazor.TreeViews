@@ -8,10 +8,6 @@ namespace Excubo.Blazor.TreeViews
 {
     public partial class TreeViewAsync<T> : TreeViewBase<T>
     {
-
-        [Parameter]
-        public T RootItem { get; set; }
-
         [Parameter]
         public Func<T, Task<List<T>>> GetChildrenAsync { get; set; }
 

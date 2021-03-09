@@ -2,7 +2,7 @@
 <SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(AsynchronousTreeView)" />
 
 <h4>Custom loading template</h4>
-<TreeViewAsync RootItem="root" GetChildrenAsync="GetChildrenAsync" HasChildrenAsync="HasChildrenAsync" AllowSelection="true" SelectedItems="SelectedItems">
+<TreeViewAsync GetChildrenAsync="GetChildrenAsync" HasChildrenAsync="HasChildrenAsync" AllowSelection="true" SelectedItems="SelectedItems">
     <ItemTemplate>
         @context.Item.Self
     </ItemTemplate>
@@ -12,11 +12,12 @@
 </TreeViewAsync>
 
 @code { 
-    private Item root = new Item { Self = "A" };
+
     private List<Item> SelectedItems { get; set; }
 
     private async Task<List<Item>> GetChildrenAsync(Item i)
     {
+        if (i == null) return new List<Item>{new Item{Self = "A"}, new Item { Self = "A" } };
         await Task.Delay(1000);
         char c = (char)i.Self[0];
         char next = (char)(c + 1);
@@ -25,6 +26,7 @@
 
     private async Task<bool> HasChildrenAsync(Item i)
     {
+        if (i == null) return true;
         await Task.Delay(1000);
         return i.Self != "E";
     }
@@ -33,5 +35,5 @@
     {
         public string Self { get; set; }
         public List<Item> Children { get; set; } = new List<Item>();
-    } 
+    }
 }
