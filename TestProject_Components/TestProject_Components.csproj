@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BlazorMdc" Version="1.0.0-Preview.13" />
-    <PackageReference Include="Excubo.Blazor.Grids" Version="2.0.30" />
+    <PackageReference Include="Excubo.Blazor.Grids" Version="2.0.34" />
     <PackageReference Include="MatBlazor" Version="2.8.0" />
   </ItemGroup>
   <ItemGroup>
