@@ -31,7 +31,7 @@
 
     private async Task<bool> HasChildrenAsync(Item i)
     {
-        if (i == null || i.Self == "A") return true;
+        if (i == null) return true;
         await Task.Delay(1000);
         switch (i.Self)
         {
