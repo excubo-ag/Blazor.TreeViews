@@ -1,0 +1,54 @@
+﻿@typeparam T
+@inherits OrderedListAsyncBase<T>
+
+<OrderedList Collapsed="Collapsed">
+     @foreach (var item in childItems)
+     {
+         <ListItem @key="item.Value" Context="ChildCollapsed" Item="item.Value" Level="Level" LoadingChild="item.LoadingChildren" HasChildren="item.HasChildren">
+              @if (!ChildCollapsed)
+              {
+                  <OrderedListByGetChildrenAsync Level="Level + 1"
+                                                 Collapsed="ChildCollapsed"
+                                                 Parental="item.Value" GetChildrenAsync="GetChildrenAsync" Loading="(loading) => item.LoadingChildren = loading"/>
+              }
+         </ListItem>
+     }
+</OrderedList>
+
+@code {
+
+    [Parameter]
+    public T Parental { get; set; }
+
+    [Parameter]
+    public Func<T, Task<List<T>>> GetChildrenAsync { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> Loading { get; set; }
+
+    public class ChildItem
+    {
+        public T Value { get; set; }
+        public bool HasChildren { get; set; } = false;
+        public bool LoadingChildren { get; set; } = false;
+        public int Index { get; set; }
+    }
+
+    List<ChildItem> childItems = new List<ChildItem>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Loading.InvokeAsync(true);
+        foreach (var item in SortBy(FilterBy(await GetChildrenAsync(Parental))).ToList())
+        {
+            childItems.Add(new ChildItem { Value = item, HasChildren = true });
+        }
+        await Loading.InvokeAsync(false);
+        await base.OnInitializedAsync();
+        foreach (var childItem in childItems)
+        {
+            childItem.HasChildren = await TreeViewAsync.HasChildrenAsync(childItem.Value);
+        }
+    }
+
+}
