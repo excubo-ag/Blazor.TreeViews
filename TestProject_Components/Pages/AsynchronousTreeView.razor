@@ -19,21 +19,32 @@
     {
         if (i == null) return new List<Item>{new Item{Self = "A"}, new Item { Self = "A" } };
         await Task.Delay(1000);
-        char c = (char)i.Self[0];
-        char next = (char)(c + 1);
-        return new List<Item> { new Item { Self = next.ToString() } };
+        return i.Self switch
+        {
+            "A" => new List<Item> {new Item {Self = "B1"}, new Item {Self = "B2"}},
+            "B1" => new List<Item> {new Item {Self = "C1"}, new Item {Self = "C2"}},
+            "B2" => new List<Item> {new Item {Self = "C1"}},
+            "C1" => new List<Item> {new Item {Self = "D1"}},
+            _ => new List<Item>()
+        };
     }
 
     private async Task<bool> HasChildrenAsync(Item i)
     {
         if (i == null) return true;
         await Task.Delay(1000);
-        return i.Self != "E";
+        switch (i.Self)
+        {
+            case "C2":
+            case "D1":
+                return false;
+            default:
+                return true;
+        }
     }
 
     private class Item
     {
         public string Self { get; set; }
-        public List<Item> Children { get; set; } = new List<Item>();
     }
 }
