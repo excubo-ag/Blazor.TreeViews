@@ -39,11 +39,9 @@
     protected override async Task OnInitializedAsync()
     {
         await Loading.InvokeAsync(true);
-        var i = 0;
         foreach (var item in SortBy(FilterBy(await GetChildrenAsync(Parental))).ToList())
         {
-            // var hasChildren = await TreeViewAsync.HasChildrenAsync(item);
-            childItems.Add(new ChildItem{Value = item, HasChildren = true});
+            childItems.Add(new ChildItem { Value = item, HasChildren = true });
         }
         await Loading.InvokeAsync(false);
         await base.OnInitializedAsync();
