@@ -1,0 +1,45 @@
+﻿@page "/filtered_asynchronous_tree_view"
+<SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(FilteredAsynchronousTreeView)" />
+
+<TreeViewAsync GetChildrenAsync="GetChildrenAsync" HasChildrenAsync="HasChildrenAsync" AllowSelection="true" SelectedItems="SelectedItems" FilterBy="@((items) => items.Where(i => i.Self != "C1"))">
+    <ItemTemplate>
+        @context.Item.Self
+    </ItemTemplate>
+</TreeViewAsync>
+
+@code {
+
+    private List<Item> SelectedItems { get; set; }
+
+    private async Task<List<Item>> GetChildrenAsync(Item i)
+    {
+        if (i == null)
+        {
+            return new List<Item> { new Item { Self = "A" }, new Item { Self = "A" } };
+        }
+        await Task.Delay(1000);
+        return i.Self switch
+        {
+            "A" => new List<Item> { new Item { Self = "B1" }, new Item { Self = "B2" } },
+            "B1" => new List<Item> { new Item { Self = "C1" }, new Item { Self = "C2" } },
+            "B2" => new List<Item> { new Item { Self = "C1" } },
+            "C1" => new List<Item> { new Item { Self = "D1" } },
+            _ => new List<Item>()
+        };
+    }
+
+    private async Task<bool> HasChildrenAsync(Item i)
+    {
+        if (i == null)
+        {
+            return true;
+        }
+        await Task.Delay(1000);
+        return !(i.Self is "C2" or "D1");
+    }
+
+    private class Item
+    {
+        public string Self { get; set; }
+    }
+}
