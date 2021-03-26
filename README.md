@@ -82,24 +82,25 @@ If you can't find your favorite library, please consider contributing to this li
 }
 ```
 
-### [BlazorMdc](https://github.com/BlazorMdc/BlazorMdc)
-
-(deprecated)
+### [Material.Blazor](https://github.com/Material-Blazor/Material.Blazor)
 
 ```cs
 @code {
     private static readonly object no_render = new object();
-    private static readonly CheckboxFragment checkbox_template_blazor_mdc =
+    private static readonly CheckboxFragment checkbox_template_material_blazor =
     CheckboxFragmentConverter.ToCheckboxFragment((value, indeterminate, value_changed, indeterminate_changed) =>
         (builder) =>
         {
-            builder.OpenComponent<BlazorMdc.MTCheckbox>(0);
-            builder.AddAttribute(1, nameof(BlazorMdc.MTCheckbox.Value), value);
-            builder.AddAttribute(2, nameof(BlazorMdc.MTCheckbox.ValueChanged), EventCallback.Factory.Create<bool>(no_render, value_changed));
-            builder.AddAttribute(3, nameof(BlazorMdc.MTCheckbox.IsIndeterminate), indeterminate);
-            builder.AddAttribute(4, nameof(BlazorMdc.MTCheckbox.IsIndeterminateChanged), EventCallback.Factory.Create<bool>(no_render, indeterminate_changed));
-            builder.AddEventStopPropagationAttribute(7, "onclick", true);
+            builder.OpenElement(0, "div");
+            builder.AddAttribute(1, "style", "display: inline");
+            builder.AddEventStopPropagationAttribute(2, "onclick", true);
+            builder.OpenComponent<Material.Blazor.MBCheckbox>(3);
+            builder.AddAttribute(4, nameof(Material.Blazor.MBCheckbox.Value), value);
+            builder.AddAttribute(5, nameof(Material.Blazor.MBCheckbox.ValueChanged), EventCallback.Factory.Create<bool>(no_render, value_changed));
+            builder.AddAttribute(6, nameof(Material.Blazor.MBCheckbox.IsIndeterminate), indeterminate);
+            builder.AddAttribute(7, nameof(Material.Blazor.MBCheckbox.IsIndeterminateChanged), EventCallback.Factory.Create<bool>(no_render, indeterminate_changed));
             builder.CloseComponent();
+            builder.CloseElement();
         });
 }
 ```
