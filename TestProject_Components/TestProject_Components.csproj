@@ -5,7 +5,7 @@
   <ItemGroup>
     <PackageReference Include="Excubo.Blazor.Grids" Version="2.0.41" />
     <PackageReference Include="MatBlazor" Version="2.8.0" />
-    <PackageReference Include="Material.Blazor" Version="2.0.0-preview.3" />
+    <PackageReference Include="Material.Blazor" Version="2.0.0-preview.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TreeView\Blazor.TreeView.csproj" />
