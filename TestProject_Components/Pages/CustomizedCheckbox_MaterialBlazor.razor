@@ -1,10 +1,13 @@
 ﻿
 <h4>Material.Blazor</h4>
+<div style="margin-bottom: 20px">
+    <Material.Blazor.MBCheckbox @bind-Value="Disabled" Label="Disabled" />
+</div>
 
 @code {
     private static readonly object no_render = new object();
     private static readonly CheckboxFragment checkbox_template_material_blazor =
-    CheckboxFragmentConverter.ToCheckboxFragment((value, indeterminate, value_changed, indeterminate_changed) =>
+    CheckboxFragmentConverter.ToCheckboxFragment((value, indeterminate, value_changed, indeterminate_changed, disabled) =>
         (builder) =>
         {
             builder.OpenComponent<Material.Blazor.MBCheckbox>(0);
@@ -12,16 +15,18 @@
             builder.AddAttribute(2, nameof(Material.Blazor.MBCheckbox.ValueChanged), EventCallback.Factory.Create<bool>(no_render, value_changed));
             builder.AddAttribute(3, nameof(Material.Blazor.MBCheckbox.IsIndeterminate), indeterminate);
             builder.AddAttribute(4, nameof(Material.Blazor.MBCheckbox.IsIndeterminateChanged), EventCallback.Factory.Create<bool>(no_render, indeterminate_changed));
-            builder.AddEventStopPropagationAttribute(5, "onclick", true);
+            builder.AddAttribute(5, nameof(Material.Blazor.MBCheckbox.Disabled), disabled);
+            builder.AddEventStopPropagationAttribute(6, "onclick", true);
             builder.CloseComponent();
         });
 }
 
-<TreeView Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template_material_blazor" />
+<TreeView Disabled="Disabled" Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template_material_blazor" />
 
 @code {
+    private bool Disabled { get; set; }
     private List<string> Items = new List<string>
-    {
+{
         "1",
         "1.1",
         "1.2",

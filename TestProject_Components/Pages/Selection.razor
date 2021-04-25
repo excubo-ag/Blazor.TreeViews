@@ -1,7 +1,11 @@
 ﻿@page "/selection"
 <SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(Selection)" />
 
-<TreeView Items="Items" GetParent="GetParent" AllowSelection="true" @bind-SelectedItems="SelectedValues" />
+<div style="margin-bottom: 20px">
+    <input id="disabled-trigger" type="checkbox" checked="@Disabled" @onclick="() => Disabled = !Disabled" />
+    <label for="disabled-trigger">disabled</label>
+</div>
+<TreeView Disabled="Disabled" Items="Items" GetParent="GetParent" AllowSelection="true" @bind-SelectedItems="SelectedValues" />
 
 @if (SelectedValues != null)
 {
@@ -10,12 +14,14 @@
 
 
 @code {
+    private bool Disabled { get; set; }
+
     private List<string> SelectedValues = new List<string>
-    {
+{
         "3.1.1"
     };
     private List<string> Items = new List<string>
-    {
+{
         "1",
         "1.1",
         "1.2",

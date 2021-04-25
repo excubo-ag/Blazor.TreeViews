@@ -1,13 +1,14 @@
 ﻿@using Microsoft.JSInterop
 @inject IJSRuntime js
 
-<input @ref="checkbox" type="checkbox" checked="@Value" @onclick="() => { Value = (Value != true); ValueChanged?.Invoke(Value); }" @onclick:stopPropagation />
+<input @ref="checkbox" type="checkbox" checked="@Value" disabled="@Disabled" @onclick="() => { Value = (Value != true); ValueChanged?.Invoke(Value); }" @onclick:stopPropagation />
 
 @code {
     private ElementReference checkbox;
     private bool? old_value = true;
     [Parameter] public bool? Value { get; set; }
     [Parameter] public Action<bool?> ValueChanged { get; set; }
+    [Parameter] public bool Disabled { get; set; }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (old_value != Value)
