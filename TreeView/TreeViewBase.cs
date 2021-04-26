@@ -63,8 +63,8 @@ namespace Excubo.Blazor.TreeViews
         {
             builder.OpenComponent<DefaultCheckbox>(0);
             builder.AddAttribute(1, nameof(DefaultCheckbox.Value), value);
-            builder.AddAttribute(1, nameof(DefaultCheckbox.ValueChanged), value_changed);
-            builder.AddAttribute(1, nameof(DefaultCheckbox.Disabled), disabled);
+            builder.AddAttribute(2, nameof(DefaultCheckbox.ValueChanged), value_changed);
+            builder.AddAttribute(3, nameof(DefaultCheckbox.Disabled), disabled);
             builder.CloseComponent();
         };
         /// <summary>
