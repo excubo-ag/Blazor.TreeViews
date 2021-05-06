@@ -10,6 +10,7 @@
 <button @onclick="() => TreeDisabled = !TreeDisabled">Toggle disable state of tree</button>
 <button @onclick="@(() => { Items.First(x => x.Value == "1").Disabled = !Items.First(x => x.Value == "1").Disabled; })">Toggle disable state of 1</button>
 <button @onclick="@(() => { Items.First(x => x.Value == "1.1").Disabled = !Items.First(x => x.Value == "1.1").Disabled; })">Toggle disable state of 1.1</button>
+<button @onclick="@(() => { Items.First(x => x.Value == "1.2").Disabled = !Items.First(x => x.Value == "1.2").Disabled; })">Toggle disable state of 1.2</button>
 
 @code {
     private bool TreeDisabled { get; set; }
@@ -34,6 +35,7 @@
         ("1", true),
         "1.1",
         "1.2",
+        "1.3",
         "2",
         "3",
         "3.1",
