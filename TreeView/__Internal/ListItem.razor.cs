@@ -15,6 +15,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 return;
             }
+            
             Selected = value;
             OnSelectedChanged?.Invoke(Selected);
             Parent?.ReevaluateSelected();
@@ -78,8 +79,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
         }
         protected void ReevaluateSelected()
         {
-            var enabledChildren = Children.Where(x => !x.Disabled).ToList();
-            if (!enabledChildren.Any())
+            if (!Children.Any())
             {
                 return;
             }
@@ -87,8 +87,8 @@ namespace Excubo.Blazor.TreeViews.__Internal
             // - at least one child is indeterminate, OR
             // - at least two children differ in state
             // Otherwise, the state of this needs to be the same as all the children, which is the same as the state of the first child.
-            var state = enabledChildren.First().Selected;
-            state = state == null ? null : (enabledChildren.Skip(1).Any(c => c.Selected != state) ? null : state);
+            var state = Children.First().Selected;
+            state = state == null ? null : (Children.Skip(1).Any(c => c.Selected != state) ? null : state);
             if (Selected == state)
             {
                 return;
