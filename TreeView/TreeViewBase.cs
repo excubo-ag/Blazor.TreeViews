@@ -39,6 +39,11 @@ namespace Excubo.Blazor.TreeViews
         [Parameter]
         public bool Disabled { get; set; }
         /// <summary>
+        /// Controls which nodes are disabled. When an node is disabled, its children are disabled too.
+        /// </summary>
+        [Parameter]
+        public Func<T, bool> ItemDisabled { get; set; }
+        /// <summary>
         /// When set to true, checkboxes are displayed.
         /// </summary>
         [Parameter]

@@ -28,6 +28,8 @@ namespace Excubo.Blazor.TreeViews.__Internal
         private string Class => TreeView?.ItemClass;
         [Parameter] public EventCallback<bool> CollapseHasChanged { get; set; }
         [Parameter] public bool LoadingChild { get; set; }
+        private bool _disabled { get; set; }
+        public bool Disabled => TreeView.Disabled || Parent?.Disabled == true || _disabled;
 
         protected override void OnInitialized()
         {
@@ -36,8 +38,11 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 Collapsed = true;
             }
-            var this_should_be_selected = Parent?.Selected == true || TreeView.SelectedItems?.Contains(Item) == true;
-            SelectedChanged(this_should_be_selected);
+            if (!Disabled)
+            {
+                var this_should_be_selected = Parent?.Selected == true || TreeView.SelectedItems?.Contains(Item) == true;
+                SelectedChanged(this_should_be_selected);
+            }
             base.OnInitialized();
         }
         protected override void OnAfterRender(bool firstRender)
@@ -65,11 +70,16 @@ namespace Excubo.Blazor.TreeViews.__Internal
                     Parent.OnSelectedChanged += ReactOnSelectedChanged;
                 }
             }
+            if (TreeView.ItemDisabled != null)
+            {
+                _disabled = TreeView.ItemDisabled.Invoke(Item);
+            }
             base.OnParametersSet();
         }
         protected void ReevaluateSelected()
         {
-            if (!Children.Any())
+            var enabledChildren = Children.Where(x => !x.Disabled).ToList();
+            if (!enabledChildren.Any())
             {
                 return;
             }
@@ -77,8 +87,8 @@ namespace Excubo.Blazor.TreeViews.__Internal
             // - at least one child is indeterminate, OR
             // - at least two children differ in state
             // Otherwise, the state of this needs to be the same as all the children, which is the same as the state of the first child.
-            var state = Children.First().Selected;
-            state = state == null ? null : (Children.Skip(1).Any(c => c.Selected != state) ? null : state);
+            var state = enabledChildren.First().Selected;
+            state = state == null ? null : (enabledChildren.Skip(1).Any(c => c.Selected != state) ? null : state);
             if (Selected == state)
             {
                 return;
@@ -105,6 +115,10 @@ namespace Excubo.Blazor.TreeViews.__Internal
         }
         private void ReactOnSelectedChanged(bool? new_value)
         {
+            if (Disabled)
+            {
+                return;
+            }
             if (new_value == null)
             {
                 return;

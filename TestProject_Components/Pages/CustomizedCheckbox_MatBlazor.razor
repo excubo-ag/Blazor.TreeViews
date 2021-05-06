@@ -1,7 +1,5 @@
 ﻿<h4>MatBlazor</h4>
-<div style="margin-bottom: 20px">
-    <MatBlazor.MatCheckbox @bind-Value="Disabled" Label="Disabled" />
-</div>
+
 @code {
     private static readonly object no_render = new object();
     private static readonly CheckboxFragment checkbox_template_matblazor =
@@ -18,11 +16,9 @@
             };
 }
 
-<TreeView Disabled="Disabled" Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template_matblazor" />
+<TreeView Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template_matblazor" />
 
 @code {
-    private bool Disabled { get; set; }
-
     private List<string> Items = new List<string>
     {
         "1",

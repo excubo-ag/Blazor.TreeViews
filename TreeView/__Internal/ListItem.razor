@@ -7,9 +7,9 @@
         </svg>
         @if (AllowSelection)
         {
-            @CheckboxTemplate(Selected, SelectedChanged, TreeView.Disabled)
+            @CheckboxTemplate(Selected, SelectedChanged, Disabled)
         }
-        <span style="display: inline-block; vertical-align: middle; @(TreeView.Disabled ? "color: gray" : null)">
+        <span style="display: inline-block; vertical-align: middle; @(Disabled ? "color: gray" : null)">
                 <CascadingValue Value="this" IsFixed="true">
                     @ItemTemplate((Level, Item))
                 </CascadingValue>

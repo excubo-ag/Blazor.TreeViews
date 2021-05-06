@@ -1,8 +1,4 @@
-﻿
-<h4>Material.Blazor</h4>
-<div style="margin-bottom: 20px">
-    <Material.Blazor.MBCheckbox @bind-Value="Disabled" Label="Disabled" />
-</div>
+﻿<h4>Material.Blazor</h4>
 
 @code {
     private static readonly object no_render = new object();
@@ -21,10 +17,9 @@
         });
 }
 
-<TreeView Disabled="Disabled" Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template_material_blazor" />
+<TreeView Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template_material_blazor" />
 
 @code {
-    private bool Disabled { get; set; }
     private List<string> Items = new List<string>
     {
         "1",
