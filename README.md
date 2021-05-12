@@ -51,6 +51,13 @@ The API should feel like you're using Blazor, not a javascript library.
 The non-C# part of the code of the library should be as tiny as possible. We set ourselves a maximum amount of 10kB for combined js+css.
 The current payload is 0kB.
 
+## Breaking changes
+
+### Version 2.0.0
+
+In this version, @qinhuaihe added support for `Disabled`, both on individual elements, and the entire tree view. This required a few changes to the API, including how custom checkbox styles are handled.
+Please refer to the section below to learn how to implement a custom checkbox style.
+
 ## Checkbox style from another component library
 
 It is possible to configure the checkbox style for a `TreeView` with `AllowSelection` enabled. Use the `CheckboxTemplate` parameter:
@@ -68,15 +75,16 @@ If you can't find your favorite library, please consider contributing to this li
 ```cs
 @code {
     private static readonly object no_render = new object();
-    private static readonly CheckboxFragment checkbox_template =
-        (value, value_changed) =>
+    private static readonly CheckboxFragment checkbox_template_matblazor =
+        (value, indeterminate, value_changed, disabled) =>
             (builder) =>
             {
                 builder.OpenComponent<MatBlazor.MatCheckbox<bool?>>(0);
-                builder.AddAttribute(1, nameof(MatBlazor.MatCheckbox<bool?>.Value), value);
-                builder.AddAttribute(2, nameof(MatBlazor.MatCheckbox<bool?>.ValueChanged), EventCallback.Factory.Create<bool?>(no_render, value_changed));
+                builder.AddAttribute(1, nameof(MatBlazor.MatCheckbox<bool?>.Value), indeterminate ? null : value);
+                builder.AddAttribute(2, nameof(MatBlazor.MatCheckbox<bool?>.ValueChanged), EventCallback.Factory.Create<bool?>(no_render, (v) => { if (v != null) { value_changed(v.Value); } }));
                 builder.AddAttribute(3, nameof(MatBlazor.MatCheckbox<bool?>.Indeterminate), true);
-                builder.AddEventStopPropagationAttribute(4, "onclick", true);
+                builder.AddAttribute(4, nameof(MatBlazor.MatCheckbox<bool?>.Disabled), disabled);
+                builder.AddEventStopPropagationAttribute(5, "onclick", true);
                 builder.CloseComponent();
             };
 }
@@ -88,16 +96,16 @@ If you can't find your favorite library, please consider contributing to this li
 @code {
     private static readonly object no_render = new object();
     private static readonly CheckboxFragment checkbox_template_material_blazor =
-    CheckboxFragmentConverter.ToCheckboxFragment((value, indeterminate, value_changed, indeterminate_changed) =>
-        (builder) =>
-        {
-            builder.OpenComponent<Material.Blazor.MBCheckbox>(0);
-            builder.AddAttribute(1, nameof(Material.Blazor.MBCheckbox.Value), value);
-            builder.AddAttribute(2, nameof(Material.Blazor.MBCheckbox.ValueChanged), EventCallback.Factory.Create<bool>(no_render, value_changed));
-            builder.AddAttribute(3, nameof(Material.Blazor.MBCheckbox.IsIndeterminate), indeterminate);
-            builder.AddAttribute(4, nameof(Material.Blazor.MBCheckbox.IsIndeterminateChanged), EventCallback.Factory.Create<bool>(no_render, indeterminate_changed));
-            builder.AddEventStopPropagationAttribute(5, "onclick", true);
-            builder.CloseComponent();
-        });
+        (value, indeterminate, value_changed, disabled) =>
+            (builder) =>
+            {
+                builder.OpenComponent<Material.Blazor.MBCheckbox>(0);
+                builder.AddAttribute(1, nameof(Material.Blazor.MBCheckbox.Value), value);
+                builder.AddAttribute(2, nameof(Material.Blazor.MBCheckbox.ValueChanged), EventCallback.Factory.Create<bool>(no_render, value_changed));
+                builder.AddAttribute(3, nameof(Material.Blazor.MBCheckbox.IsIndeterminate), indeterminate);
+                builder.AddAttribute(4, nameof(Material.Blazor.MBCheckbox.Disabled), disabled);
+                builder.AddEventStopPropagationAttribute(5, "onclick", true);
+                builder.CloseComponent();
+            };
 }
 ```
