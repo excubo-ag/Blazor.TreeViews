@@ -64,12 +64,13 @@ namespace Excubo.Blazor.TreeViews
         /// Controls the display of the checkbox. Requires <see cref="AllowSelection"/> to be set to true. Defaults to a pure HTML checkbox.
         /// </summary>
         [Parameter]
-        public CheckboxFragment CheckboxTemplate { get; set; } = (value, value_changed, disabled) => (builder) =>
+        public CheckboxFragment CheckboxTemplate { get; set; } = (value, indeterminate, value_changed, disabled) => (builder) =>
         {
             builder.OpenComponent<DefaultCheckbox>(0);
             builder.AddAttribute(1, nameof(DefaultCheckbox.Value), value);
-            builder.AddAttribute(2, nameof(DefaultCheckbox.ValueChanged), value_changed);
-            builder.AddAttribute(3, nameof(DefaultCheckbox.Disabled), disabled);
+            builder.AddAttribute(2, nameof(DefaultCheckbox.Indeterminate), indeterminate);
+            builder.AddAttribute(3, nameof(DefaultCheckbox.ValueChanged), value_changed);
+            builder.AddAttribute(4, nameof(DefaultCheckbox.Disabled), disabled);
             builder.CloseComponent();
         };
         /// <summary>
