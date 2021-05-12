@@ -55,7 +55,7 @@ The current payload is 0kB.
 
 ### Version 2.0.0
 
-In this version, @qinhuaihe added support for `Disabled`, both on individual elements, and the entire tree view. This required a few changes to the API, including how custom checkbox styles are handled.
+In this version, [@qinhuaihe](https://github.com/qinhuaihe) added support for `Disabled`, both on individual elements, and the entire tree view. This required a few changes to the API, including how custom checkbox styles are handled.
 Please refer to the section below to learn how to implement a custom checkbox style.
 
 ## Checkbox style from another component library
