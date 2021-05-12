@@ -6,11 +6,11 @@
         (value, indeterminate, value_changed, disabled) =>
             (builder) =>
             {
-                builder.OpenComponent<MatBlazor.MatCheckbox<bool>>(0);
-                builder.AddAttribute(1, nameof(MatBlazor.MatCheckbox<bool>.Value), value);
-                builder.AddAttribute(2, nameof(MatBlazor.MatCheckbox<bool>.ValueChanged), EventCallback.Factory.Create<bool>(no_render, value_changed));
-                builder.AddAttribute(3, nameof(MatBlazor.MatCheckbox<bool>.Indeterminate), indeterminate);
-                builder.AddAttribute(4, nameof(MatBlazor.MatCheckbox<bool>.Disabled), disabled);
+                builder.OpenComponent<MatBlazor.MatCheckbox<bool?>>(0);
+                builder.AddAttribute(1, nameof(MatBlazor.MatCheckbox<bool?>.Value), indeterminate ? null : value);
+                builder.AddAttribute(2, nameof(MatBlazor.MatCheckbox<bool?>.ValueChanged), EventCallback.Factory.Create<bool?>(no_render, (v) => { if (v != null) { value_changed(v.Value); } }));
+                builder.AddAttribute(3, nameof(MatBlazor.MatCheckbox<bool?>.Indeterminate), true);
+                builder.AddAttribute(4, nameof(MatBlazor.MatCheckbox<bool?>.Disabled), disabled);
                 builder.AddEventStopPropagationAttribute(5, "onclick", true);
                 builder.CloseComponent();
             };
