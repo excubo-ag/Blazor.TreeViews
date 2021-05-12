@@ -1,0 +1,57 @@
+﻿@page "/disable"
+<SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(DisableTreeOrNodes)" />
+
+<TreeView Disabled="TreeDisabled" Items="Items" ItemDisabled="item => item.Disabled" GetParent="GetParent" AllowSelection>
+    <ItemTemplate>
+        @context.Item.Value (@(context.Item.Disabled ? "disabled" : "enabled"))
+    </ItemTemplate>
+</TreeView>
+
+<button @onclick="() => TreeDisabled = !TreeDisabled">Toggle disable state of tree</button>
+<button @onclick="@(() => { Items.First(x => x.Value == "1").Disabled = !Items.First(x => x.Value == "1").Disabled; })">Toggle disable state of 1</button>
+<button @onclick="@(() => { Items.First(x => x.Value == "1.1").Disabled = !Items.First(x => x.Value == "1.1").Disabled; })">Toggle disable state of 1.1</button>
+<button @onclick="@(() => { Items.First(x => x.Value == "1.2").Disabled = !Items.First(x => x.Value == "1.2").Disabled; })">Toggle disable state of 1.2</button>
+
+@code {
+    private bool TreeDisabled { get; set; }
+    private class Item
+    {
+        public string Value { get; set; }
+        public bool Disabled { get; set; }
+        public Item(string v)
+        {
+            Value = v;
+        }
+        public Item((string value, bool state) t)
+        {
+            Value = t.value;
+            Disabled = t.state;
+        }
+        public static implicit operator Item(string v) => new Item(v);
+        public static implicit operator Item((string value, bool state) t) => new Item(t);
+    }
+    private List<Item> Items = new List<Item>
+{
+        ("1", true),
+        "1.1",
+        "1.2",
+        "1.3",
+        "2",
+        "3",
+        "3.1",
+        ("3.1.1", true),
+        "3.1.2"
+    };
+    private Item GetParent(Item item)
+    {
+        var last_period = item.Value.LastIndexOf('.');
+        if (last_period < 0)
+        {
+            return null; // no parent
+        }
+        else
+        {
+            return Items.FirstOrDefault(v => v.Value == item.Value.Substring(0, last_period));
+        }
+    }
+}

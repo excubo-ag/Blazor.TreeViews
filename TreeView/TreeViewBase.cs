@@ -34,6 +34,16 @@ namespace Excubo.Blazor.TreeViews
         [Parameter]
         public Func<IEnumerable<T>, IEnumerable<T>> FilterBy { get; set; } = (e) => e;
         /// <summary>
+        /// When set to true, the checkboxes are disabled and the tree will not respond to user's actions.
+        /// </summary>
+        [Parameter]
+        public bool Disabled { get; set; }
+        /// <summary>
+        /// Controls which nodes are disabled. When an node is disabled, its children are disabled too.
+        /// </summary>
+        [Parameter]
+        public Func<T, bool> ItemDisabled { get; set; }
+        /// <summary>
         /// When set to true, checkboxes are displayed.
         /// </summary>
         [Parameter]
@@ -54,11 +64,13 @@ namespace Excubo.Blazor.TreeViews
         /// Controls the display of the checkbox. Requires <see cref="AllowSelection"/> to be set to true. Defaults to a pure HTML checkbox.
         /// </summary>
         [Parameter]
-        public CheckboxFragment CheckboxTemplate { get; set; } = (value, value_changed) => (builder) =>
+        public CheckboxFragment CheckboxTemplate { get; set; } = (value, indeterminate, value_changed, disabled) => (builder) =>
         {
             builder.OpenComponent<DefaultCheckbox>(0);
             builder.AddAttribute(1, nameof(DefaultCheckbox.Value), value);
-            builder.AddAttribute(1, nameof(DefaultCheckbox.ValueChanged), value_changed);
+            builder.AddAttribute(2, nameof(DefaultCheckbox.Indeterminate), indeterminate);
+            builder.AddAttribute(3, nameof(DefaultCheckbox.ValueChanged), value_changed);
+            builder.AddAttribute(4, nameof(DefaultCheckbox.Disabled), disabled);
             builder.CloseComponent();
         };
         /// <summary>
