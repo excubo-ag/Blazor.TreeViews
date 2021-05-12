@@ -8,21 +8,29 @@ namespace Excubo.Blazor.TreeViews.__Internal
     public partial class ListItem<T> : ListItemBase, IDisposable
     {
         [Parameter] public T Item { get; set; }
-        private bool? Selected { get; set; }
-        private void SelectedChanged(bool? value)
+        private bool Selected { get; set; }
+        private bool Indeterminate { get; set; }
+        private void SelectedChanged(bool? selected, bool? indeterminate = null)
         {
-            if (value == Selected)
+            if (selected.HasValue && selected.Value == Selected && indeterminate.HasValue && indeterminate.Value == Indeterminate)
             {
                 return;
             }
-            
-            Selected = value;
-            OnSelectedChanged?.Invoke(Selected);
+
+            if (indeterminate.HasValue)
+            {
+                Indeterminate = indeterminate.Value;
+            }
+            if (selected.HasValue)
+            {
+                Selected = selected.Value;
+                OnSelectedChanged?.Invoke(Selected);
+            }
             Parent?.ReevaluateSelected();
             TreeView.UpdateSelection(Item, Selected);
             InvokeAsync(StateHasChangedIfNotDisposed);
         }
-        protected event Action<bool?> OnSelectedChanged;
+        protected event Action<bool> OnSelectedChanged;
         [CascadingParameter] private TreeViewBase<T> TreeView { get; set; }
         [CascadingParameter] private ListItem<T> Parent { get; set; }
         protected HashSet<ListItem<T>> Children = new HashSet<ListItem<T>>();
@@ -83,17 +91,21 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 return;
             }
-            // The state of this needs to be indeterminate if
+
+            bool? state = null;
+            // The state of indeterminate needs to be true if
             // - at least one child is indeterminate, OR
             // - at least two children differ in state
-            // Otherwise, the state of this needs to be the same as all the children, which is the same as the state of the first child.
-            var state = Children.First().Selected;
-            state = state == null ? null : (Children.Skip(1).Any(c => c.Selected != state) ? null : state);
-            if (Selected == state)
+            var indeterminate = Children.Any(x => x.Indeterminate) || (Children.Any(x => x.Selected) && Children.Any(x => !x.Selected));
+            if (Children.All(x => x.Selected && !x.Indeterminate))
             {
-                return;
+                state = true;
             }
-            SelectedChanged(state);
+            else if (Children.All(x => !x.Selected && !x.Indeterminate))
+            {
+                state = false;
+            }
+            SelectedChanged(state, indeterminate);
         }
         private RenderFragment<ItemContent<T>> ItemTemplate => TreeView.ItemTemplate;
         private CheckboxFragment CheckboxTemplate => TreeView.CheckboxTemplate;
@@ -113,13 +125,9 @@ namespace Excubo.Blazor.TreeViews.__Internal
                 }
             }
         }
-        private void ReactOnSelectedChanged(bool? new_value)
+        private void ReactOnSelectedChanged(bool new_value)
         {
             if (Disabled)
-            {
-                return;
-            }
-            if (new_value == null)
             {
                 return;
             }

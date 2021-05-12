@@ -5,17 +5,18 @@
 
 @code {
     private ElementReference checkbox;
-    private bool? old_value = true;
-    [Parameter] public bool? Value { get; set; }
-    [Parameter] public Action<bool?> ValueChanged { get; set; }
+    //private bool old_indeterminate = true;
+    [Parameter] public bool Value { get; set; }
+    [Parameter] public Action<bool> ValueChanged { get; set; }
     [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Indeterminate { get; set; }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (old_value != Value)
-        {
-            old_value = Value;
-            await js.InvokeVoidAsync("eval", $"document.querySelector('[_bl_{checkbox.Id}=\"\"]').indeterminate = {(Value == null ? "true" : "false")}");
-        }
+        //if (old_indeterminate != Indeterminate)
+        //{
+        //    old_indeterminate = Indeterminate;
+        await js.InvokeVoidAsync("eval", $"document.querySelector('[_bl_{checkbox.Id}=\"\"]').indeterminate = {(Indeterminate ? "true" : "false")}");
+        //}
         await base.OnAfterRenderAsync(firstRender);
     }
 }
