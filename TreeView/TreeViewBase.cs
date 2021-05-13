@@ -79,17 +79,13 @@ namespace Excubo.Blazor.TreeViews
         [Parameter]
         public bool InitiallyCollapsed { get; set; }
 
-        internal void UpdateSelection(T item, bool? selected)
+        internal void UpdateSelection(T item, bool selected, bool indeterminate)
         {
-            if (selected == null)
-            {
-                return;
-            }
             if (SelectedItems == null)
             {
                 SelectedItems = new List<T>();
             }
-            if (selected == false)
+            if (!selected || indeterminate)
             {
                 SelectedItems.Remove(item);
                 InvokeAsync(async () =>
@@ -103,19 +99,22 @@ namespace Excubo.Blazor.TreeViews
                     }
                 });
             }
-            else if (selected == true && !SelectedItems.Contains(item))
+            else
             {
-                SelectedItems.Add(item);
-                InvokeAsync(async () =>
+                if (!SelectedItems.Contains(item))
                 {
-                    try
+                    SelectedItems.Add(item);
+                    InvokeAsync(async () =>
                     {
-                        await SelectedItemsChanged.InvokeAsync(SelectedItems);
-                    }
-                    catch
-                    {
-                    }
-                });
+                        try
+                        {
+                            await SelectedItemsChanged.InvokeAsync(SelectedItems);
+                        }
+                        catch
+                        {
+                        }
+                    });
+                }
             }
         }
     }
