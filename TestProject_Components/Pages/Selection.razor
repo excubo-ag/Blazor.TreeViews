@@ -7,7 +7,12 @@
 {
     @string.Join(", ", SelectedValues)
 }
-
+<div>
+    <button @onclick="@(() => SelectedValues = new List<string> {  })">Set nothing Selected</button>
+    <button @onclick="@(() => SelectedValues = new List<string> { "3" })">Set 3 Selected</button>
+    <button @onclick="@(() => SelectedValues = new List<string> { "3.1" })">Set 3.1 Selected</button>
+    <button @onclick="@(() => SelectedValues = new List<string> { "3.1.1" })">Set 3.1.1 Selected</button>
+</div>
 
 @code {
     private List<string> SelectedValues = new List<string>

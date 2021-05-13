@@ -47,11 +47,6 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 Collapsed = true;
             }
-            if (!Disabled)
-            {
-                var this_should_be_selected = Parent?.Selected == true || TreeView.SelectedItems?.Contains(Item) == true;
-                SelectedChanged(this_should_be_selected);
-            }
             base.OnInitialized();
         }
         protected override void OnAfterRender(bool firstRender)
@@ -62,11 +57,6 @@ namespace Excubo.Blazor.TreeViews.__Internal
                 {
                     SelectedChanged(true);
                 }
-                else
-                {
-                    SelectedChanged(false);
-                }
-                Parent?.ReevaluateSelected();
             }
             base.OnAfterRender(firstRender);
         }
