@@ -1,5 +1,6 @@
 ﻿using Excubo.Blazor.TreeViews.__Internal;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -53,7 +54,7 @@ namespace Excubo.Blazor.TreeViews
         /// The items that should have a checked checkbox next to them. Requires <see cref="AllowSelection"/> to be set to true.
         /// </summary>
         [Parameter]
-        public List<T> SelectedItems { get; set; } = new List<T>();
+        public List<T> SelectedItems { get; set; }
 
         /// <summary>
         /// Callback for when the selection of items changes by user interaction. Requires <see cref="AllowSelection"/> to be set to true.
