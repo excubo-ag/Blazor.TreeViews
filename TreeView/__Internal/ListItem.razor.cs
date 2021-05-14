@@ -12,6 +12,10 @@ namespace Excubo.Blazor.TreeViews.__Internal
         private bool Indeterminate { get; set; }
         private void SelectedChanged(bool? selected, bool indeterminate)
         {
+            if (disposed)
+            {
+                return;
+            }
             if (selected.HasValue && selected.Value == Selected && indeterminate == Indeterminate)
             {
                 return;
@@ -56,6 +60,10 @@ namespace Excubo.Blazor.TreeViews.__Internal
         }
         protected override void OnAfterRender(bool firstRender)
         {
+            if (disposed)
+            {
+                return;
+            }
             if (firstRender)
             {
                 if (TreeView.SelectedItems != null && TreeView.SelectedItems.Contains(Item))
@@ -83,6 +91,10 @@ namespace Excubo.Blazor.TreeViews.__Internal
         }
         private void ReevaluateSelected()
         {
+            if (disposed)
+            {
+                return;
+            }
             if (!Children.Any())
             {
                 return;
@@ -123,6 +135,10 @@ namespace Excubo.Blazor.TreeViews.__Internal
         }
         private void ReactOnSelectedChanged(bool new_value)
         {
+            if (disposed)
+            {
+                return;
+            }
             if (Disabled)
             {
                 return;
@@ -131,6 +147,10 @@ namespace Excubo.Blazor.TreeViews.__Internal
         }
         public void Dispose()
         {
+            if (disposed)
+            {
+                return;
+            }
             disposed = true;
             if (Parent != null)
             {
