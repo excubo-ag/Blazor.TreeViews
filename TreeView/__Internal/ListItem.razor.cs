@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Excubo.Blazor.TreeViews.__Internal
 {
-    public partial class ListItem<T> : ListItemBase, IDisposable
+    public sealed partial class ListItem<T> : ListItemBase, IDisposable
     {
         [Parameter] public T Item { get; set; }
         private bool Selected { get; set; }
@@ -30,10 +30,10 @@ namespace Excubo.Blazor.TreeViews.__Internal
             TreeView.UpdateSelection(Item, Selected, Indeterminate);
             InvokeAsync(StateHasChangedIfNotDisposed);
         }
-        protected event Action<bool> OnSelectedChanged;
+        private event Action<bool> OnSelectedChanged;
         [CascadingParameter] private TreeViewBase<T> TreeView { get; set; }
         [CascadingParameter] private ListItem<T> Parent { get; set; }
-        protected HashSet<ListItem<T>> Children = new HashSet<ListItem<T>>();
+        private HashSet<ListItem<T>> Children = new HashSet<ListItem<T>>();
         private string Class => TreeView?.ItemClass;
         [Parameter] public EventCallback<bool> CollapseHasChanged { get; set; }
         [Parameter] public bool LoadingChild { get; set; }
@@ -81,7 +81,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
             }
             base.OnParametersSet();
         }
-        protected void ReevaluateSelected()
+        private void ReevaluateSelected()
         {
             if (!Children.Any())
             {
@@ -139,6 +139,6 @@ namespace Excubo.Blazor.TreeViews.__Internal
             }
             SelectedChanged(false, false);
         }
-        protected RenderFragment LoadChildrenTemplate => (TreeView as TreeViewAsync<T>)?.LoadingTemplate;
+        private RenderFragment LoadChildrenTemplate => (TreeView as TreeViewAsync<T>)?.LoadingTemplate;
     }
 }

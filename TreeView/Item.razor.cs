@@ -7,7 +7,7 @@ namespace Excubo.Blazor.TreeViews
     /// <summary>
     /// An item of a <see cref="MarkupTreeView"/>
     /// </summary>
-    public partial class Item : IDisposable
+    public sealed partial class Item : IDisposable
     {
         [CascadingParameter] public MarkupTreeView TreeView { get; set; }
         [CascadingParameter] public Item Parent { get; set; }
