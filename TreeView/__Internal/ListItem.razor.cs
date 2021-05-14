@@ -136,8 +136,8 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 Parent.OnSelectedChanged -= ReactOnSelectedChanged;
                 Parent.Children.Remove(this);
+                Parent.ReevaluateSelected();
             }
-            SelectedChanged(false, false);
         }
         private RenderFragment LoadChildrenTemplate => (TreeView as TreeViewAsync<T>)?.LoadingTemplate;
     }
