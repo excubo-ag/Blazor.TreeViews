@@ -1,5 +1,6 @@
 ﻿using Excubo.Blazor.TreeViews.__Internal;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -53,7 +54,7 @@ namespace Excubo.Blazor.TreeViews
         /// The items that should have a checked checkbox next to them. Requires <see cref="AllowSelection"/> to be set to true.
         /// </summary>
         [Parameter]
-        public List<T> SelectedItems { get; set; } = new List<T>();
+        public List<T> SelectedItems { get; set; }
 
         /// <summary>
         /// Callback for when the selection of items changes by user interaction. Requires <see cref="AllowSelection"/> to be set to true.
@@ -79,17 +80,13 @@ namespace Excubo.Blazor.TreeViews
         [Parameter]
         public bool InitiallyCollapsed { get; set; }
 
-        internal void UpdateSelection(T item, bool? selected)
+        internal void UpdateSelection(T item, bool selected, bool indeterminate)
         {
-            if (selected == null)
-            {
-                return;
-            }
             if (SelectedItems == null)
             {
                 SelectedItems = new List<T>();
             }
-            if (selected == false)
+            if (!selected || indeterminate)
             {
                 SelectedItems.Remove(item);
                 InvokeAsync(async () =>
@@ -103,19 +100,22 @@ namespace Excubo.Blazor.TreeViews
                     }
                 });
             }
-            else if (selected == true && !SelectedItems.Contains(item))
+            else
             {
-                SelectedItems.Add(item);
-                InvokeAsync(async () =>
+                if (!SelectedItems.Contains(item))
                 {
-                    try
+                    SelectedItems.Add(item);
+                    InvokeAsync(async () =>
                     {
-                        await SelectedItemsChanged.InvokeAsync(SelectedItems);
-                    }
-                    catch
-                    {
-                    }
-                });
+                        try
+                        {
+                            await SelectedItemsChanged.InvokeAsync(SelectedItems);
+                        }
+                        catch
+                        {
+                        }
+                    });
+                }
             }
         }
     }

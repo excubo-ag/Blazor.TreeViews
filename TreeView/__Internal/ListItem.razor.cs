@@ -5,35 +5,35 @@ using System.Linq;
 
 namespace Excubo.Blazor.TreeViews.__Internal
 {
-    public partial class ListItem<T> : ListItemBase, IDisposable
+    public sealed partial class ListItem<T> : ListItemBase, IDisposable
     {
         [Parameter] public T Item { get; set; }
         private bool Selected { get; set; }
         private bool Indeterminate { get; set; }
-        private void SelectedChanged(bool? selected, bool? indeterminate = null)
+        private void SelectedChanged(bool? selected, bool indeterminate)
         {
-            if (selected.HasValue && selected.Value == Selected && indeterminate.HasValue && indeterminate.Value == Indeterminate)
+            if (selected.HasValue && selected.Value == Selected && indeterminate == Indeterminate)
             {
                 return;
             }
 
-            if (indeterminate.HasValue)
-            {
-                Indeterminate = indeterminate.Value;
-            }
+            Indeterminate = indeterminate;
             if (selected.HasValue)
             {
-                Selected = selected.Value;
-                OnSelectedChanged?.Invoke(Selected);
+                if (Selected != selected.Value)
+                {
+                    Selected = selected.Value;
+                    OnSelectedChanged?.Invoke(Selected);
+                }
             }
             Parent?.ReevaluateSelected();
-            TreeView.UpdateSelection(Item, Selected);
+            TreeView.UpdateSelection(Item, Selected, Indeterminate);
             InvokeAsync(StateHasChangedIfNotDisposed);
         }
-        protected event Action<bool> OnSelectedChanged;
+        private event Action<bool> OnSelectedChanged;
         [CascadingParameter] private TreeViewBase<T> TreeView { get; set; }
         [CascadingParameter] private ListItem<T> Parent { get; set; }
-        protected HashSet<ListItem<T>> Children = new HashSet<ListItem<T>>();
+        private HashSet<ListItem<T>> Children = new HashSet<ListItem<T>>();
         private string Class => TreeView?.ItemClass;
         [Parameter] public EventCallback<bool> CollapseHasChanged { get; set; }
         [Parameter] public bool LoadingChild { get; set; }
@@ -50,7 +50,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
             if (!Disabled)
             {
                 var this_should_be_selected = Parent?.Selected == true || TreeView.SelectedItems?.Contains(Item) == true;
-                SelectedChanged(this_should_be_selected);
+                SelectedChanged(this_should_be_selected, false);
             }
             base.OnInitialized();
         }
@@ -60,11 +60,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 if (TreeView.SelectedItems != null && TreeView.SelectedItems.Contains(Item))
                 {
-                    SelectedChanged(true);
-                }
-                else
-                {
-                    SelectedChanged(false);
+                    SelectedChanged(true, false);
                 }
                 Parent?.ReevaluateSelected();
             }
@@ -85,7 +81,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
             }
             base.OnParametersSet();
         }
-        protected void ReevaluateSelected()
+        private void ReevaluateSelected()
         {
             if (!Children.Any())
             {
@@ -131,7 +127,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 return;
             }
-            SelectedChanged(new_value);
+            SelectedChanged(new_value, false);
         }
         public void Dispose()
         {
@@ -140,9 +136,9 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 Parent.OnSelectedChanged -= ReactOnSelectedChanged;
                 Parent.Children.Remove(this);
+                Parent.ReevaluateSelected();
             }
-            SelectedChanged(false);
         }
-        protected RenderFragment LoadChildrenTemplate => (TreeView as TreeViewAsync<T>)?.LoadingTemplate;
+        private RenderFragment LoadChildrenTemplate => (TreeView as TreeViewAsync<T>)?.LoadingTemplate;
     }
 }

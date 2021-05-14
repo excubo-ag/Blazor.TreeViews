@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Excubo.Blazor.TreeViews.__Internal;
 
 namespace Excubo.Blazor.TreeViews
 {
