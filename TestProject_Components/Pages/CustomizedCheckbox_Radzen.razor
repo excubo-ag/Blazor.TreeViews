@@ -1,0 +1,58 @@
+﻿@using Excubo.Blazor.TreeViews
+@using Radzen
+@using Radzen.Blazor
+
+<h4>Radzen Sample</h4>
+
+@code {
+    private static readonly object no_render = new object();
+    private static readonly CheckboxFragment checkbox_template_radzen =
+        (value, indeterminate, value_changed, disabled) =>
+            (builder) =>
+            {
+                builder.OpenComponent<RadzenCheckBox<bool?>>(0);
+                builder.AddAttribute(1, nameof(RadzenCheckBox<bool?>.Value), indeterminate ? null : value);
+                builder.AddAttribute(2, nameof(RadzenCheckBox<bool?>.ValueChanged), EventCallback.Factory.Create<bool?>(no_render, (v) => { if (v != null) { value_changed(v.Value); } }));
+                builder.AddAttribute(3, nameof(RadzenCheckBox<bool?>.TriState), false);
+                builder.AddAttribute(4, nameof(RadzenCheckBox<bool?>.Disabled), disabled);
+                builder.AddEventStopPropagationAttribute(5, "onclick", true);
+                builder.CloseComponent();
+            };
+}
+
+<TreeView Items="Nested" GetChildren="(item) => item.Children" AllowSelection="true" CheckboxTemplate="checkbox_template_radzen">
+    <ItemTemplate>
+        @context.Item.Self
+    </ItemTemplate>
+</TreeView>
+
+@code {
+    private static readonly List<Item> AllItems = new List<Item>
+{
+        new Item
+        {
+            Self = "One",
+            Children = new List<Item>
+    {
+                new Item
+                {
+                    Self = "One-One"
+                },
+                new Item
+                {
+                    Self = "One-Two"
+                }
+            }
+        },
+        new Item
+        {
+            Self = "Two"
+        }
+    };
+    private class Item
+    {
+        public string Self { get; set; }
+        public List<Item> Children { get; set; }
+    }
+    private List<Item> Nested = AllItems.ToList();
+}
