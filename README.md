@@ -109,3 +109,24 @@ If you can't find your favorite library, please consider contributing to this li
             };
 }
 ```
+
+
+### [Radzen.Blazor](https://github.com/radzenhq/radzen-blazor)
+
+```cs
+@code {
+    private static readonly object no_render = new object();
+    private static readonly CheckboxFragment checkbox_template_radzen =
+        (value, indeterminate, value_changed, disabled) =>
+            (builder) =>
+            {
+                builder.OpenComponent<Radzen.Blazor.RadzenCheckBox<bool?>>(0);
+                builder.AddAttribute(1, nameof(Radzen.Blazor.RadzenCheckBox<bool?>.Value), indeterminate ? null : value);
+                builder.AddAttribute(2, nameof(Radzen.Blazor.RadzenCheckBox<bool?>.ValueChanged), EventCallback.Factory.Create<bool?>(no_render, (v) => { if (v != null) { value_changed(v.Value); } }));
+                builder.AddAttribute(3, nameof(Radzen.Blazor.RadzenCheckBox<bool?>.TriState), false);
+                builder.AddAttribute(4, nameof(Radzen.Blazor.RadzenCheckBox<bool?>.Disabled), disabled);
+                builder.AddEventStopPropagationAttribute(5, "onclick", true);
+                builder.CloseComponent();
+            };
+}
+```
