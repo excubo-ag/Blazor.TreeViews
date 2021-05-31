@@ -7,7 +7,7 @@
         </svg>
         @if (AllowSelection)
         {
-            @CheckboxTemplate(Selected, Indeterminate, value => SelectedChanged(value, Indeterminate), Disabled)
+            @CheckboxTemplate(Selected, Indeterminate, SelectedChanged, Disabled)
         }
         <span style="display: inline-block; vertical-align: middle; @(Disabled ? "color: gray" : null)">
                 <CascadingValue Value="this" IsFixed="true">

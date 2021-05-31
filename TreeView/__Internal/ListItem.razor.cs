@@ -10,26 +10,50 @@ namespace Excubo.Blazor.TreeViews.__Internal
         [Parameter] public T Item { get; set; }
         private bool Selected { get; set; }
         private bool Indeterminate { get; set; }
-        private void SelectedChanged(bool? selected, bool indeterminate)
+        private void SelectedChanged(bool newSelected)
         {
             if (disposed)
             {
                 return;
             }
-            if (selected.HasValue && selected.Value == Selected && indeterminate == Indeterminate)
+            if (newSelected == Selected && !Indeterminate)
+            {
+                return;
+            }
+
+            Indeterminate = false;
+            Selected = newSelected;
+            OnSelectedChanged?.Invoke(Selected);
+            Parent?.ReevaluateSelected();
+            TreeView.UpdateSelection(Item, Selected, Indeterminate);
+            InvokeAsync(StateHasChangedIfNotDisposed);
+        }
+        private void SelectedAndIndeterminateChanged(bool newSelected, bool newIndeterminate)
+        {
+            if (disposed)
+            {
+                return;
+            }
+            if (newSelected == Selected && newIndeterminate == Indeterminate)
+            {
+                return;
+            }
+
+            Indeterminate = newIndeterminate;
+            Selected = newSelected;
+            OnSelectedChanged?.Invoke(Selected);
+            Parent?.ReevaluateSelected();
+            TreeView.UpdateSelection(Item, Selected, Indeterminate);
+            InvokeAsync(StateHasChangedIfNotDisposed);
+        }
+        private void IndeterminateChanged(bool indeterminate)
+        {
+            if (disposed)
             {
                 return;
             }
 
             Indeterminate = indeterminate;
-            if (selected.HasValue)
-            {
-                if (Selected != selected.Value)
-                {
-                    Selected = selected.Value;
-                    OnSelectedChanged?.Invoke(Selected);
-                }
-            }
             Parent?.ReevaluateSelected();
             TreeView.UpdateSelection(Item, Selected, Indeterminate);
             InvokeAsync(StateHasChangedIfNotDisposed);
@@ -54,7 +78,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
             if (!Disabled)
             {
                 var this_should_be_selected = Parent?.Selected == true || TreeView.SelectedItems?.Contains(Item) == true;
-                SelectedChanged(this_should_be_selected, false);
+                SelectedChanged(this_should_be_selected);
             }
             base.OnInitialized();
         }
@@ -68,7 +92,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 if (TreeView.SelectedItems != null && TreeView.SelectedItems.Contains(Item))
                 {
-                    SelectedChanged(true, false);
+                    SelectedChanged(true);
                 }
                 Parent?.ReevaluateSelected();
             }
@@ -113,7 +137,14 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 state = false;
             }
-            SelectedChanged(state, indeterminate);
+            if (state == null)
+            {
+                IndeterminateChanged(indeterminate);
+            }
+            else
+            {
+                SelectedAndIndeterminateChanged(state.Value, indeterminate);
+            }
         }
         private RenderFragment<ItemContent<T>> ItemTemplate => TreeView.ItemTemplate;
         private CheckboxFragment CheckboxTemplate => TreeView.CheckboxTemplate;
@@ -143,7 +174,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 return;
             }
-            SelectedChanged(new_value, false);
+            SelectedChanged(new_value);
         }
         public void Dispose()
         {
