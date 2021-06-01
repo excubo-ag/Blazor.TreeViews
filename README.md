@@ -8,8 +8,6 @@ Excubo.Blazor.TreeViews is a native-Blazor tree-view component.
 
 [Demo on github.io using Blazor Webassembly](https://excubo-ag.github.io/Blazor.TreeViews/)
 
-[Blazor Tree Creator with Checkboxes](https://blazorhelpwebsite.com/ViewBlogPost/51)
-
 ## How to use
 
 ### 1. Install the nuget package Excubo.Blazor.TreeViews
@@ -132,3 +130,10 @@ If you can't find your favorite library, please consider contributing to this li
             };
 }
 ```
+### Samples and Tutorials
+
+The official usage examples can be found on https://excubo-ag.github.io/Blazor.TreeViews/.
+
+All following links provided here are not **affiliated with excubo ag** and have been **contributed by the community**.
+
+- [Blazor Tree Creator with Checkboxes](https://blazorhelpwebsite.com/ViewBlogPost/51) by [@ADefWebserver](https://github.com/ADefWebserver/)
