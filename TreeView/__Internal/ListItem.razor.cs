@@ -5,29 +5,68 @@ using System.Linq;
 
 namespace Excubo.Blazor.TreeViews.__Internal
 {
-    public partial class ListItem<T> : ListItemBase, IDisposable
+    public sealed partial class ListItem<T> : ListItemBase, IDisposable
     {
         [Parameter] public T Item { get; set; }
-        private bool? Selected { get; set; }
-        private void SelectedChanged(bool? value)
+        private bool Selected { get; set; }
+        private bool Indeterminate { get; set; }
+        private void SelectedChanged(bool newSelected)
         {
-            if (value == Selected)
+            if (disposed)
             {
                 return;
             }
-            Selected = value;
+            if (newSelected == Selected && !Indeterminate)
+            {
+                return;
+            }
+
+            Indeterminate = false;
+            Selected = newSelected;
             OnSelectedChanged?.Invoke(Selected);
             Parent?.ReevaluateSelected();
-            TreeView.UpdateSelection(Item, Selected);
+            TreeView.UpdateSelection(Item, Selected, Indeterminate);
             InvokeAsync(StateHasChangedIfNotDisposed);
         }
-        protected event Action<bool?> OnSelectedChanged;
+        private void SelectedAndIndeterminateChanged(bool newSelected, bool newIndeterminate)
+        {
+            if (disposed)
+            {
+                return;
+            }
+            if (newSelected == Selected && newIndeterminate == Indeterminate)
+            {
+                return;
+            }
+
+            Indeterminate = newIndeterminate;
+            Selected = newSelected;
+            OnSelectedChanged?.Invoke(Selected);
+            Parent?.ReevaluateSelected();
+            TreeView.UpdateSelection(Item, Selected, Indeterminate);
+            InvokeAsync(StateHasChangedIfNotDisposed);
+        }
+        private void IndeterminateChanged(bool indeterminate)
+        {
+            if (disposed)
+            {
+                return;
+            }
+
+            Indeterminate = indeterminate;
+            Parent?.ReevaluateSelected();
+            TreeView.UpdateSelection(Item, Selected, Indeterminate);
+            InvokeAsync(StateHasChangedIfNotDisposed);
+        }
+        private event Action<bool> OnSelectedChanged;
         [CascadingParameter] private TreeViewBase<T> TreeView { get; set; }
         [CascadingParameter] private ListItem<T> Parent { get; set; }
-        protected HashSet<ListItem<T>> Children = new HashSet<ListItem<T>>();
+        private HashSet<ListItem<T>> Children = new HashSet<ListItem<T>>();
         private string Class => TreeView?.ItemClass;
         [Parameter] public EventCallback<bool> CollapseHasChanged { get; set; }
         [Parameter] public bool LoadingChild { get; set; }
+        private bool _disabled { get; set; }
+        public bool Disabled => TreeView.Disabled || Parent?.Disabled == true || _disabled;
 
         protected override void OnInitialized()
         {
@@ -36,21 +75,24 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 Collapsed = true;
             }
-            var this_should_be_selected = Parent?.Selected == true || TreeView.SelectedItems?.Contains(Item) == true;
-            SelectedChanged(this_should_be_selected);
+            if (!Disabled)
+            {
+                var this_should_be_selected = Parent?.Selected == true || TreeView.SelectedItems?.Contains(Item) == true;
+                SelectedChanged(this_should_be_selected);
+            }
             base.OnInitialized();
         }
         protected override void OnAfterRender(bool firstRender)
         {
+            if (disposed)
+            {
+                return;
+            }
             if (firstRender)
             {
                 if (TreeView.SelectedItems != null && TreeView.SelectedItems.Contains(Item))
                 {
                     SelectedChanged(true);
-                }
-                else
-                {
-                    SelectedChanged(false);
                 }
                 Parent?.ReevaluateSelected();
             }
@@ -65,25 +107,44 @@ namespace Excubo.Blazor.TreeViews.__Internal
                     Parent.OnSelectedChanged += ReactOnSelectedChanged;
                 }
             }
+            if (TreeView.ItemDisabled != null)
+            {
+                _disabled = TreeView.ItemDisabled.Invoke(Item);
+            }
             base.OnParametersSet();
         }
-        protected void ReevaluateSelected()
+        private void ReevaluateSelected()
         {
+            if (disposed)
+            {
+                return;
+            }
             if (!Children.Any())
             {
                 return;
             }
-            // The state of this needs to be indeterminate if
+
+            bool? state = null;
+            // The state of indeterminate needs to be true if
             // - at least one child is indeterminate, OR
             // - at least two children differ in state
-            // Otherwise, the state of this needs to be the same as all the children, which is the same as the state of the first child.
-            var state = Children.First().Selected;
-            state = state == null ? null : (Children.Skip(1).Any(c => c.Selected != state) ? null : state);
-            if (Selected == state)
+            var indeterminate = Children.Any(x => x.Indeterminate) || (Children.Any(x => x.Selected) && Children.Any(x => !x.Selected));
+            if (Children.All(x => x.Selected && !x.Indeterminate))
             {
-                return;
+                state = true;
             }
-            SelectedChanged(state);
+            else if (Children.All(x => !x.Selected && !x.Indeterminate))
+            {
+                state = false;
+            }
+            if (state == null)
+            {
+                IndeterminateChanged(indeterminate);
+            }
+            else
+            {
+                SelectedAndIndeterminateChanged(state.Value, indeterminate);
+            }
         }
         private RenderFragment<ItemContent<T>> ItemTemplate => TreeView.ItemTemplate;
         private CheckboxFragment CheckboxTemplate => TreeView.CheckboxTemplate;
@@ -103,9 +164,13 @@ namespace Excubo.Blazor.TreeViews.__Internal
                 }
             }
         }
-        private void ReactOnSelectedChanged(bool? new_value)
+        private void ReactOnSelectedChanged(bool new_value)
         {
-            if (new_value == null)
+            if (disposed)
+            {
+                return;
+            }
+            if (Disabled)
             {
                 return;
             }
@@ -113,14 +178,18 @@ namespace Excubo.Blazor.TreeViews.__Internal
         }
         public void Dispose()
         {
+            if (disposed)
+            {
+                return;
+            }
             disposed = true;
             if (Parent != null)
             {
                 Parent.OnSelectedChanged -= ReactOnSelectedChanged;
                 Parent.Children.Remove(this);
+                Parent.ReevaluateSelected();
             }
-            SelectedChanged(false);
         }
-        protected RenderFragment LoadChildrenTemplate => (TreeView as TreeViewAsync<T>)?.LoadingTemplate;
+        private RenderFragment LoadChildrenTemplate => (TreeView as TreeViewAsync<T>)?.LoadingTemplate;
     }
 }

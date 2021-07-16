@@ -13,14 +13,14 @@
   </PropertyGroup>
   <!--Repository-->
   <PropertyGroup>
-    <PackageProjectUrl>https://github.com/excubo-ag/Blazor.TreeView</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/excubo-ag/Blazor.TreeView</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/excubo-ag/Blazor.TreeViews</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/excubo-ag/Blazor.TreeViews</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <!--PackageId, Version-->
   <PropertyGroup>
     <PackageId>Excubo.Blazor.TreeViews</PackageId>
-    <Version>1.7.10</Version>
+    <Version>2.2.6</Version>
   </PropertyGroup>
   <!--Self Include-->
   <ItemGroup>

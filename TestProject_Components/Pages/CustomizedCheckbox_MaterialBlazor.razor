@@ -1,22 +1,22 @@
-﻿<h4>MatBlazor</h4>
+﻿<h4>Material.Blazor</h4>
 
 @code {
     private static readonly object no_render = new object();
-    private static readonly CheckboxFragment checkbox_template_matblazor =
+    private static readonly CheckboxFragment checkbox_template_material_blazor =
         (value, indeterminate, value_changed, disabled) =>
             (builder) =>
             {
-                builder.OpenComponent<MatBlazor.MatCheckbox<bool?>>(0);
-                builder.AddAttribute(1, nameof(MatBlazor.MatCheckbox<bool?>.Value), indeterminate ? null : value);
-                builder.AddAttribute(2, nameof(MatBlazor.MatCheckbox<bool?>.ValueChanged), EventCallback.Factory.Create<bool?>(no_render, (v) => { if (v != null) { value_changed(v.Value); } }));
-                builder.AddAttribute(3, nameof(MatBlazor.MatCheckbox<bool?>.Indeterminate), true);
-                builder.AddAttribute(4, nameof(MatBlazor.MatCheckbox<bool?>.Disabled), disabled);
+                builder.OpenComponent<Material.Blazor.MBCheckbox>(0);
+                builder.AddAttribute(1, nameof(Material.Blazor.MBCheckbox.Value), value);
+                builder.AddAttribute(2, nameof(Material.Blazor.MBCheckbox.ValueChanged), EventCallback.Factory.Create<bool>(no_render, value_changed));
+                builder.AddAttribute(3, nameof(Material.Blazor.MBCheckbox.IsIndeterminate), indeterminate);
+                builder.AddAttribute(4, nameof(Material.Blazor.MBCheckbox.Disabled), disabled);
                 builder.AddEventStopPropagationAttribute(5, "onclick", true);
                 builder.CloseComponent();
             };
 }
 
-<TreeView Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template_matblazor" />
+<TreeView Items="Items" GetParent="GetParent" AllowSelection="true" CheckboxTemplate="checkbox_template_material_blazor" />
 
 @code {
     private List<string> Items = new List<string>

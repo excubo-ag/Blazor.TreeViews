@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-    <TargetFrameworks>net5.0</TargetFrameworks>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BlazorMdc" Version="1.0.0-Preview.13" />
-    <PackageReference Include="Excubo.Blazor.Grids" Version="2.0.34" />
+    <PackageReference Include="Excubo.Blazor.Grids" Version="2.0.49" />
     <PackageReference Include="MatBlazor" Version="2.8.0" />
+    <PackageReference Include="Material.Blazor" Version="2.0.0-preview.6" />
+    <PackageReference Include="Radzen.Blazor" Version="3.6.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TreeView\Blazor.TreeView.csproj" />

@@ -1,4 +1,4 @@
-using BlazorMdc;
+using Material.Blazor;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +25,7 @@ namespace TestProject_ServerSide
         {
             _ = services.AddRazorPages();
             _ = services.AddServerSideBlazor();
-            _ = services.AddMTServices();
+            _ = services.AddMBServices();
             _ = services.AddScoped((s) =>
             {
                 var uriHelper = s.GetRequiredService<NavigationManager>();

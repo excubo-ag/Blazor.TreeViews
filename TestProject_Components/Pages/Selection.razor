@@ -1,15 +1,56 @@
 ﻿@page "/selection"
 <SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(Selection)" />
 
-<TreeView Items="Items" GetParent="GetParent" AllowSelection="true" @bind-SelectedItems="SelectedValues" />
+<TreeView @key="SelectedValues" Items="Items" GetParent="GetParent" AllowSelection="true" @bind-SelectedItems="SelectedValues">
+    <ItemTemplate>
+        <div @onclick="() => { selectedItem = (selectedItem != context.Item) ? context.Item : null; }" style="background-color: @(selectedItem == context.Item ? "Highlight" : "inherit")">@context.Item</div>
+    </ItemTemplate>
+</TreeView>
 
-@if (SelectedValues != null)
+@if (SelectedValues != null && SelectedValues.Any())
 {
-    @string.Join(", ", SelectedValues)
+    <p>@string.Join(", ", SelectedValues)</p>
+}
+else
+{
+    <p>Click a checkbox to select an item (and its children; the parent state may also change)</p>
+}
+@if (selectedItem != null)
+{
+    <p>The highlighted item is @selectedItem</p>
+}
+else
+{
+    <p>Click on an item to highlight it.</p>
 }
 
 
+<div>
+    <button @onclick="@(() =>SelectedValues = new List<string> { })">
+        Set nothing Selected
+    </button>
+    This will clear the entire selection.
+    <br />
+    <button @onclick="@(() => SelectedValues = new List<string> { "3" })">
+        Set 3 Selected
+    </button>
+    This will select item 3, and implicitly its child 3.1, which in turn will implicitly select items 3.1.1 and 3.1.2.
+    <br />
+    <button @onclick="@(() => SelectedValues = new List<string> { "3.1" })">
+        Set 3.1 Selected
+    </button>
+    This will select item 3.1, and implicitly its children 3.1.1 and 3.1.2. The parent (item 3) will also turn selected, as all the children of item 3 are selected.
+    <br />
+    <button @onclick="@(() => SelectedValues = new List<string> { "3.1.1" })">
+        Set 3.1.1 Selected
+    </button>
+    This will select item 3.1.1. Its parent (3.1) will go to indeterminate state, as one element (3.1.1) is selected, and another isn't (3.1.2). This will also influence the parent of 3.1 (which is 3), to go into indeterminate state.
+    <br />
+</div>
+
+
 @code {
+    private string selectedItem;
     private List<string> SelectedValues = new List<string>
     {
         "3.1.1"

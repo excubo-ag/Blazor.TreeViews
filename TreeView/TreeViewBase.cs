@@ -1,5 +1,6 @@
 ﻿using Excubo.Blazor.TreeViews.__Internal;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -34,6 +35,16 @@ namespace Excubo.Blazor.TreeViews
         [Parameter]
         public Func<IEnumerable<T>, IEnumerable<T>> FilterBy { get; set; } = (e) => e;
         /// <summary>
+        /// When set to true, the checkboxes are disabled and the tree will not respond to user's actions.
+        /// </summary>
+        [Parameter]
+        public bool Disabled { get; set; }
+        /// <summary>
+        /// Controls which nodes are disabled. When an node is disabled, its children are disabled too.
+        /// </summary>
+        [Parameter]
+        public Func<T, bool> ItemDisabled { get; set; }
+        /// <summary>
         /// When set to true, checkboxes are displayed.
         /// </summary>
         [Parameter]
@@ -43,7 +54,7 @@ namespace Excubo.Blazor.TreeViews
         /// The items that should have a checked checkbox next to them. Requires <see cref="AllowSelection"/> to be set to true.
         /// </summary>
         [Parameter]
-        public List<T> SelectedItems { get; set; } = new List<T>();
+        public List<T> SelectedItems { get; set; }
 
         /// <summary>
         /// Callback for when the selection of items changes by user interaction. Requires <see cref="AllowSelection"/> to be set to true.
@@ -54,11 +65,13 @@ namespace Excubo.Blazor.TreeViews
         /// Controls the display of the checkbox. Requires <see cref="AllowSelection"/> to be set to true. Defaults to a pure HTML checkbox.
         /// </summary>
         [Parameter]
-        public CheckboxFragment CheckboxTemplate { get; set; } = (value, value_changed) => (builder) =>
+        public CheckboxFragment CheckboxTemplate { get; set; } = (value, indeterminate, value_changed, disabled) => (builder) =>
         {
             builder.OpenComponent<DefaultCheckbox>(0);
             builder.AddAttribute(1, nameof(DefaultCheckbox.Value), value);
-            builder.AddAttribute(1, nameof(DefaultCheckbox.ValueChanged), value_changed);
+            builder.AddAttribute(2, nameof(DefaultCheckbox.Indeterminate), indeterminate);
+            builder.AddAttribute(3, nameof(DefaultCheckbox.ValueChanged), value_changed);
+            builder.AddAttribute(4, nameof(DefaultCheckbox.Disabled), disabled);
             builder.CloseComponent();
         };
         /// <summary>
@@ -67,17 +80,13 @@ namespace Excubo.Blazor.TreeViews
         [Parameter]
         public bool InitiallyCollapsed { get; set; }
 
-        internal void UpdateSelection(T item, bool? selected)
+        internal void UpdateSelection(T item, bool selected, bool indeterminate)
         {
-            if (selected == null)
-            {
-                return;
-            }
             if (SelectedItems == null)
             {
                 SelectedItems = new List<T>();
             }
-            if (selected == false)
+            if (!selected || indeterminate)
             {
                 SelectedItems.Remove(item);
                 InvokeAsync(async () =>
@@ -91,19 +100,22 @@ namespace Excubo.Blazor.TreeViews
                     }
                 });
             }
-            else if (selected == true && !SelectedItems.Contains(item))
+            else
             {
-                SelectedItems.Add(item);
-                InvokeAsync(async () =>
+                if (!SelectedItems.Contains(item))
                 {
-                    try
+                    SelectedItems.Add(item);
+                    InvokeAsync(async () =>
                     {
-                        await SelectedItemsChanged.InvokeAsync(SelectedItems);
-                    }
-                    catch
-                    {
-                    }
-                });
+                        try
+                        {
+                            await SelectedItemsChanged.InvokeAsync(SelectedItems);
+                        }
+                        catch
+                        {
+                        }
+                    });
+                }
             }
         }
     }

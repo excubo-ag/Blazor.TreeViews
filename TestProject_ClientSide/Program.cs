@@ -1,4 +1,4 @@
-using BlazorMdc;
+using Material.Blazor;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,7 +13,7 @@ namespace TestProject_ClientSide
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
-            _ = builder.Services.AddMTServices();
+            _ = builder.Services.AddMBServices();
 
             _ = builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
