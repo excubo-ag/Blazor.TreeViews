@@ -36,9 +36,15 @@
 
     List<ChildItem> childItems = new List<ChildItem>();
 
+    public async Task Refresh()
+    {
+        await OnInitializedAsync();
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await Loading.InvokeAsync(true);
+        childItems = new List<ChildItem>();
         foreach (var item in SortBy(FilterBy(await GetChildrenAsync(Parental))).ToList())
         {
             childItems.Add(new ChildItem { Value = item, HasChildren = true });

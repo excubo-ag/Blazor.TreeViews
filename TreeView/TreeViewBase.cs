@@ -80,6 +80,14 @@ namespace Excubo.Blazor.TreeViews
         [Parameter]
         public bool InitiallyCollapsed { get; set; }
 
+        /// <summary>
+        /// Refresh the TreeView, including the root node
+        /// </summary>
+        public void Refresh()
+        {
+            StateHasChanged();
+        }
+
         internal void UpdateSelection(T item, bool selected, bool indeterminate)
         {
             if (SelectedItems == null)

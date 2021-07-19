@@ -2,7 +2,7 @@
 <SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(AsynchronousTreeView)" />
 
 <h4>Default loading template</h4>
-<TreeViewAsync GetChildrenAsync="GetChildrenAsync" HasChildrenAsync="HasChildrenAsync" AllowSelection="true" SelectedItems="SelectedItems">
+<TreeViewAsync GetChildrenAsync="GetChildrenAsync" HasChildrenAsync="HasChildrenAsync" AllowSelection="true" SelectedItems="SelectedItems" @ref="TreeView">
     <ItemTemplate>
         @context.Item.Self
     </ItemTemplate>
@@ -18,15 +18,22 @@
     </LoadingTemplate>
 </TreeViewAsync>
 
+<text>Root node value:</text><br/>
+<input @bind="RootNodeValue"/>
+<button @onclick="async () => await TreeView.Refresh()">Refresh TreeView</button>
+
 @code {
+    private TreeViewAsync<Item> TreeView;
 
     private List<Item> SelectedItems { get; set; }
+
+    private string RootNodeValue = "A";
 
     private async Task<List<Item>> GetChildrenAsync(Item i)
     {
         if (i == null)
         {
-            return new List<Item> { new Item { Self = "A" }, new Item { Self = "A" } };
+            return new List<Item> { new Item { Self = RootNodeValue }, new Item { Self = RootNodeValue } };
         }
         await Task.Delay(1000);
         return i.Self switch
