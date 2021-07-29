@@ -14,6 +14,9 @@ namespace Excubo.Blazor.TreeViews
         /// <summary>
         /// If this parameter is set, the TreeView is populated by grouping items under their respective parent. Items which have no parent (null) are put at the top of the hierarchy.
         /// Alternatively, use <see cref="GetChildren" />.
+        /// <br />
+        /// <br />
+        /// Note: the type parameter <c>T</c> must be nullable, as the top level items are determined by checking <c>GetParent(item) == null</c>.
         /// </summary>
         [Parameter] public Func<T, T> GetParent { get; set; }
         /// <summary>
