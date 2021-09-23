@@ -1,7 +1,7 @@
 ﻿@typeparam T
 @inherits OrderedListAsyncBase<T>
 
-<OrderedList Collapsed="Collapsed">
+<OrderedList Collapsed="Collapsed" Class="@Class">
      @foreach (var item in childItems)
      {
          <ListItem @key="item.Value" Context="ChildCollapsed" Item="item.Value" Level="Level" LoadingChild="item.LoadingChildren" HasChildren="item.HasChildren">
