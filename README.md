@@ -53,7 +53,11 @@ The current payload is 0kB.
 
 ## Breaking changes
 
-### Version 2.0.0
+### Version 3.X.Y
+
+Starting with version 3.0.0, only the net6.0 TFM is targeted. This is a change to simplify dependency management and we strongly encourage all users to upgrade to net6.0.
+
+### Version 2.X.Y
 
 In this version, [@qinhuaihe](https://github.com/qinhuaihe) added support for `Disabled`, both on individual elements, and the entire tree view. This required a few changes to the API, including how custom checkbox styles are handled.
 Please refer to the section below to learn how to implement a custom checkbox style.
