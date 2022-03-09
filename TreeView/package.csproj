@@ -20,7 +20,7 @@
   <!--PackageId, Version-->
   <PropertyGroup>
     <PackageId>Excubo.Blazor.TreeViews</PackageId>
-    <Version>3.0.7</Version>
+    <Version>3.0.9</Version>
   </PropertyGroup>
   <!--Self Include-->
   <ItemGroup>
