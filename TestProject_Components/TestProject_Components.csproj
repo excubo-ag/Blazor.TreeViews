@@ -5,7 +5,7 @@
   <ItemGroup>
     <PackageReference Include="Excubo.Blazor.Grids" Version="3.0.9" />
     <PackageReference Include="MatBlazor" Version="2.8.0" />
-    <PackageReference Include="Material.Blazor" Version="2.2.0" />
+    <PackageReference Include="Material.Blazor" Version="2.3.0" />
     <PackageReference Include="Radzen.Blazor" Version="3.16.3" />
   </ItemGroup>
   <ItemGroup>
