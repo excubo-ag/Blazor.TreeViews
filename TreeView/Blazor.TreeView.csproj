@@ -7,7 +7,7 @@
     <RootNamespace>Excubo.Blazor.TreeViews</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Excubo.Generators.Blazor" Version="1.14.5" />
+    <PackageReference Include="Excubo.Generators.Blazor" Version="1.14.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.5" />
   </ItemGroup>
