@@ -2,8 +2,7 @@
 @inherits OrderedListBase<T>
 
 <OrderedList Collapsed="Collapsed" Class="@Class">
-    @foreach (var item in SortBy(Parental))
-    {
+  <Virtualize Items=SortBy(Parental).ToList() Context="item" TItem="T" ItemSize=TreeView.ItemSize>
         <ListItem @key="item" Context="ChildCollapsed" Item="item" Level="Level" HasChildren="TreeView.HasChildren(item)">
             @{
                 var sub_items = GetChildren(item);
@@ -19,7 +18,7 @@
                 }
             }
         </ListItem>
-    }
+    </Virtualize>
 </OrderedList>
 @code {
     [Parameter] public List<T> Parental { get; set; }

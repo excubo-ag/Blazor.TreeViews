@@ -118,5 +118,11 @@ namespace Excubo.Blazor.TreeViews
                 }
             }
         }
-    }
+
+    /// <summary>
+    /// By default, the Virtualize component measures the rendering size (height) of individual items after the initial render occurs. Use ItemSize to provide an exact item size in advance to assist with accurate initial render performance and to ensure the correct scroll position for page reloads. 
+    /// </summary>
+    [Parameter] public int ItemSize { get { return itemSize; } set { itemSize = value; } }
+    private int itemSize = 50;
+  }
 }

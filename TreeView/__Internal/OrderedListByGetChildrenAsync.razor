@@ -2,8 +2,7 @@
 @inherits OrderedListAsyncBase<T>
 
 <OrderedList Collapsed="Collapsed" Class="@Class">
-     @foreach (var item in childItems)
-     {
+  <Virtualize Items=childItems Context="item" ItemSize=TreeViewAsync.ItemSize>
          <ListItem @key="item.Value" Context="ChildCollapsed" Item="item.Value" Level="Level" LoadingChild="item.LoadingChildren" HasChildren="item.HasChildren">
               @if (!ChildCollapsed)
               {
@@ -12,7 +11,7 @@
                                                  Parental="item.Value" GetChildrenAsync="GetChildrenAsync" Loading="(loading) => item.LoadingChildren = loading"/>
               }
          </ListItem>
-     }
+  </Virtualize>
 </OrderedList>
 
 @code {
