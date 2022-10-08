@@ -28,7 +28,6 @@ namespace Excubo.Blazor.TreeViews
         /// If this parameter is set, the TreeView will be populate based on the result of this method. Only works in conjunction with <see cref="GetChildren" />, not with <see cref="GetParent"/>.
         /// </summary>
         [Parameter] public Func<T, bool> HasChildren { get; set; }
-        [Parameter] public bool Virtualize { get; set; }
         private bool has_children_initialized;
         internal bool IsLazyLoading;
         protected override void OnParametersSet()

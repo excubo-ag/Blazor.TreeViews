@@ -20,7 +20,6 @@ namespace Excubo.Blazor.TreeViews
             builder.OpenComponent<DefaultLoadingTemplate>(0);
             builder.CloseComponent();
         };
-        [Parameter] public bool Virtualize { get; set; }
 
         protected override void OnParametersSet()
         {
