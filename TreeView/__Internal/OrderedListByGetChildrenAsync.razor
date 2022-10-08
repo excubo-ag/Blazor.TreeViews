@@ -21,9 +21,13 @@
     @<ListItem @key="item.Value" Context="ChildCollapsed" Item="item.Value" Level="Level" LoadingChild="item.LoadingChildren" HasChildren="item.HasChildren">
         @if (!ChildCollapsed)
         {
-            <OrderedListByGetChildrenAsync Level="Level + 1"
-            Collapsed="ChildCollapsed"
-            Parental="item.Value" GetChildrenAsync="GetChildrenAsync" Loading="(loading) => item.LoadingChildren = loading"/>
+            <OrderedListByGetChildrenAsync 
+                Level="Level + 1"
+                Collapsed="ChildCollapsed"
+                Parental="item.Value" 
+                GetChildrenAsync="GetChildrenAsync"
+                Loading="(loading) => item.LoadingChildren = loading"
+                Virtualize=Virtualize />
         }
     </ListItem>)
 </OrderedList>

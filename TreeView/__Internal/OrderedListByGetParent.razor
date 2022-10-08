@@ -28,7 +28,8 @@
 					Collapsed="ChildCollapsed"
 					Parental="sub_items"
 					Remaining="Remaining.Where(i => GetParent(i)?.Equals(item) != true).ToList()"
-					GetParent="GetParent" />
+					GetParent="GetParent"
+					Virtualize=Virtualize/>
 			}
 		</ListItem>;
 	})

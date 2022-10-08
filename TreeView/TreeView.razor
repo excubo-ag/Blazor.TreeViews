@@ -19,11 +19,11 @@
         var filtered = FilterBy(Items);
         var root_elements = filtered.Where(i => GetParent(i) == null).ToList();
         var non_root_elements = filtered.Where(i => GetParent(i) != null).ToList();
-        <OrderedListByGetParent Parental="root_elements" Remaining="non_root_elements" GetParent="GetParent" />
+        <OrderedListByGetParent Parental="root_elements" Remaining="non_root_elements" GetParent="GetParent" Virtualize=Virtualize />
     }
     else if (GetChildren != null)
     {
         var filtered = FilterBy(Items).ToList();
-        <OrderedListByGetChildren Parental="filtered" GetChildren="GetChildren" />
+        <OrderedListByGetChildren Parental="filtered" GetChildren="GetChildren" Virtualize=Virtualize />
     }
 </CascadingValue>
