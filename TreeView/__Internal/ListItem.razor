@@ -1,9 +1,17 @@
 ﻿@typeparam T
 @inherits ListItemBase
-<li class="@Class">
+@{
+    var classes = string.Join(" ",
+    "excubo-blazor-treeview-item",
+    (TreeView.Disabled ? "excubo-blazor-treeview-item-disabled" : ""),
+    (HasChildren ? "" : "excubo-blazor-treeview-item-nochildren"),
+    ($"excubo-blazor-treeview-item-{(Collapsed ? "collapsed" : "expanded")}")
+    );
+}
+<li class="@Class @classes">
     <div style="@(HasChildren ? "cursor: pointer" : "")" @onclick="() => { if (!HasChildren || TreeView.Disabled) { return; } Collapsed = !Collapsed; CollapsedChanged?.Invoke(); }">
         <svg viewBox="0 0 16 16" style="height: 1em; transform: rotate(@(Collapsed ? 0 : 90)deg);">
-            <path d="M 4 2 l 7 6 l -7 6" stroke="@(HasChildren ? (TreeView.Disabled ? "gray" : "black") : "transparent")" fill="transparent" stroke-width="2"/>
+            <path d="M 4 2 l 7 6 l -7 6" />
         </svg>
         @if (AllowSelection)
         {
