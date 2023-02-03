@@ -1,0 +1,21 @@
+﻿
+
+.excubo-blazor-treeview-item svg path {
+    stroke: black;
+    fill: transparent;
+    stroke-width: 2;
+}
+
+.excubo-blazor-treeview-item-disabled svg path {
+    stroke: gray;
+}
+
+.excubo-blazor-treeview-item-nochildren svg path {
+    visibility: hidden;
+}
+
+.excubo-blazor-treeview-item-expanded {
+}
+
+.excubo-blazor-treeview-item-collapsed {
+}
