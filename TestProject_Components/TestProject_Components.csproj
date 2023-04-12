@@ -3,8 +3,8 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Excubo.Blazor.Grids" Version="3.1.8" />
-    <PackageReference Include="MatBlazor" Version="2.8.0" />
+    <PackageReference Include="Excubo.Blazor.Grids" Version="3.1.10" />
+    <PackageReference Include="MatBlazor" Version="2.10.0" />
     <PackageReference Include="Material.Blazor" Version="3.3.1" />
     <PackageReference Include="Radzen.Blazor" Version="4.8.4" />
   </ItemGroup>
