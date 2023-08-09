@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using TestProject_Components.Pages;
 
 namespace TestProject_ClientSide
 {
@@ -14,7 +15,7 @@ namespace TestProject_ClientSide
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
             _ = builder.Services.AddMBServices();
-
+            _ = builder.Services.AddSingleton<SelectionStateProvider>();
             _ = builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             await builder.Build().RunAsync();

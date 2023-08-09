@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Net.Http;
+using TestProject_Components.Pages;
 
 namespace TestProject_ServerSide
 {
@@ -26,6 +27,7 @@ namespace TestProject_ServerSide
             _ = services.AddRazorPages();
             _ = services.AddServerSideBlazor();
             _ = services.AddMBServices();
+            _ = services.AddSingleton<SelectionStateProvider>();
             _ = services.AddScoped((s) =>
             {
                 var uriHelper = s.GetRequiredService<NavigationManager>();
