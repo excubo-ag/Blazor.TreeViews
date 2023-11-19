@@ -9,7 +9,7 @@
     );
 }
 <li class="@Class @classes">
-    <div style="@(HasChildren ? "cursor: pointer" : "")" @onclick="() => { if (!HasChildren || TreeView.Disabled) { return; } Collapsed = !Collapsed; CollapsedChanged?.Invoke(); }">
+    <div style="display: flex; align-items: center; @(HasChildren ? "cursor: pointer" : "")" @onclick="() => { if (!HasChildren || TreeView.Disabled) { return; } Collapsed = !Collapsed; CollapsedChanged?.Invoke(); }">
         <svg viewBox="0 0 16 16" style="height: 1em; transform: rotate(@(Collapsed ? 0 : 90)deg);">
             <path d="M 4 2 l 7 6 l -7 6" />
         </svg>
@@ -17,11 +17,11 @@
         {
             @CheckboxTemplate(Selected, Indeterminate, SelectedChanged, Disabled)
         }
-        <span style="display: inline-block; vertical-align: middle; @(Disabled ? "color: gray" : null)">
+        <div style="flex-grow: 1; display: inline-block; vertical-align: middle; @(Disabled ? "color: gray" : null)">
                 <CascadingValue Value="this" IsFixed="true">
                     @ItemTemplate((Level, Item))
                 </CascadingValue>
-        </span>
+        </div>
     </div>
     @if (LoadingChild)
     {
