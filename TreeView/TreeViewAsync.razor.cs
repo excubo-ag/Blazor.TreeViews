@@ -8,6 +8,8 @@ namespace Excubo.Blazor.TreeViews
 {
     public partial class TreeViewAsync<T> : TreeViewBase<T>
     {
+        private OrderedListByGetChildrenAsync<T> RootNode;
+
         [Parameter]
         public Func<T, Task<List<T>>> GetChildrenAsync { get; set; }
 
@@ -20,6 +22,11 @@ namespace Excubo.Blazor.TreeViews
             builder.OpenComponent<DefaultLoadingTemplate>(0);
             builder.CloseComponent();
         };
+
+        public async Task Refresh()
+        {
+            await RootNode.Refresh();
+        }
 
         protected override void OnParametersSet()
         {
