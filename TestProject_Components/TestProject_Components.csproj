@@ -3,10 +3,10 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Excubo.Blazor.Grids" Version="3.1.26" />
+    <PackageReference Include="Excubo.Blazor.Grids" Version="3.1.27" />
     <PackageReference Include="MatBlazor" Version="2.10.0" />
     <PackageReference Include="Material.Blazor" Version="5.0.0" />
-    <PackageReference Include="Radzen.Blazor" Version="4.21.3" />
+    <PackageReference Include="Radzen.Blazor" Version="4.21.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TreeView\Blazor.TreeView.csproj" />
