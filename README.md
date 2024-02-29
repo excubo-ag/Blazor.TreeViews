@@ -53,6 +53,15 @@ The current payload is 0kB.
 
 ## Breaking changes
 
+### Version 4.X.Y
+
+Starting with version 4.0.0, programmatic changes of selected items was improved.
+Previously, one had to add `@key=version` to the TreeView and increment the version after each update.
+However, this was the cause for a bug.
+The new design requires the user to take an element reference to the TreeView (`@ref=tree_view`) and call `tree_view.RefreshSelection()` after selection has been modified.
+See TestProject_Components/Pages/Selection.razor for an example.
+
+
 ### Version 3.X.Y
 
 Starting with version 3.0.0, only the net6.0 TFM is targeted. This is a change to simplify dependency management and we strongly encourage all users to upgrade to net6.0.

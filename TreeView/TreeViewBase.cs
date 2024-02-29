@@ -79,8 +79,14 @@ namespace Excubo.Blazor.TreeViews
         /// </summary>
         [Parameter]
         public bool InitiallyCollapsed { get; set; }
-
-        internal void UpdateSelection(T item, bool selected, bool indeterminate)
+		public async void RefreshSelection()
+		{
+            SelectionRefreshedProgrammatically?.Invoke();
+            await InvokeAsync(StateHasChanged);
+		}
+        public delegate void SelectionRefreshHandler();
+        public SelectionRefreshHandler SelectionRefreshedProgrammatically;
+		internal void UpdateSelection(T item, bool selected, bool indeterminate)
         {
             if (SelectedItems == null)
             {

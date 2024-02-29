@@ -16,6 +16,10 @@ namespace Excubo.Blazor.TreeViews.__Internal
             {
                 return;
             }
+            if (!newSelected && !Selected && Indeterminate)
+            {
+                return;
+            }
             if (newSelected == Selected && !Indeterminate)
             {
                 return;
@@ -67,7 +71,6 @@ namespace Excubo.Blazor.TreeViews.__Internal
         [Parameter] public bool LoadingChild { get; set; }
         private bool _disabled { get; set; }
         public bool Disabled => TreeView.Disabled || Parent?.Disabled == true || _disabled;
-
         protected override void OnInitialized()
         {
             CollapsedChanged = async () => { await CollapseHasChanged.InvokeAsync(Collapsed); };
@@ -82,7 +85,12 @@ namespace Excubo.Blazor.TreeViews.__Internal
             }
             base.OnInitialized();
         }
-        protected override void OnAfterRender(bool firstRender)
+        void RefreshProgrammaticSelections()
+		{
+			var this_should_be_selected = Parent?.Selected == true || TreeView.SelectedItems?.Contains(Item) == true;
+			SelectedChanged(this_should_be_selected);
+		}
+		protected override void OnAfterRender(bool firstRender)
         {
             if (disposed)
             {
@@ -99,8 +107,9 @@ namespace Excubo.Blazor.TreeViews.__Internal
             base.OnAfterRender(firstRender);
         }
         protected override void OnParametersSet()
-        {
-            if (Parent != null)
+		{
+			TreeView.SelectionRefreshedProgrammatically += RefreshProgrammaticSelections;
+			if (Parent != null)
             {
                 if (Parent.Children.Add(this))
                 {
@@ -188,6 +197,7 @@ namespace Excubo.Blazor.TreeViews.__Internal
                 Parent.OnSelectedChanged -= ReactOnSelectedChanged;
                 Parent.Children.Remove(this);
                 Parent.ReevaluateSelected();
+                TreeView.SelectionRefreshedProgrammatically -= RefreshProgrammaticSelections;
             }
         }
         private RenderFragment LoadChildrenTemplate => (TreeView as TreeViewAsync<T>)?.LoadingTemplate;

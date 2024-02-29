@@ -3,7 +3,7 @@
 
 <SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(Selection)" />
 
-<TreeView @key="version" Items="Items" GetParent="GetParent" AllowSelection="true" @bind-SelectedItems="SelectedValues">
+<TreeView @ref="tv" Items="Items" GetParent="GetParent" AllowSelection="true" @bind-SelectedItems="SelectedValues">
 	<ItemTemplate>
 		<div @onclick="() => { selectedItem = (selectedItem != context.Item) ? context.Item : null; }" style="background-color: @(selectedItem == context.Item ? "Highlight" : "inherit")">@context.Item</div>
 	</ItemTemplate>
@@ -28,22 +28,22 @@ else
 
 
 <div>
-	<button @onclick="@(() => {SelectedValues.Clear(); ++version; InvokeAsync(StateHasChanged);} )">
+	<button @onclick="@(() => {SelectedValues.Clear(); tv.RefreshSelection(); InvokeAsync(StateHasChanged);} )">
 		Set nothing Selected
 	</button>
 	This will clear the entire selection.
 	<br />
-	<button @onclick="@(() =>{ if (SelectedValues.Contains("3")) {return;} SelectedValues.Add("3"); ++version; InvokeAsync(StateHasChanged); })">
+	<button @onclick="@(() =>{ if (SelectedValues.Contains("3")) {return;} SelectedValues.Add("3"); tv.RefreshSelection(); InvokeAsync(StateHasChanged); })">
 		Set 3 Selected
 	</button>
 	This will select item 3, and implicitly its child 3.1, which in turn will implicitly select items 3.1.1 and 3.1.2.
 	<br />
-	<button @onclick="@(() =>{ if (SelectedValues.Contains("3.1")) {return;} SelectedValues.Add("3.1");++version; InvokeAsync(StateHasChanged); })">
+	<button @onclick="@(() =>{ if (SelectedValues.Contains("3.1")) {return;} SelectedValues.Add("3.1");tv.RefreshSelection(); InvokeAsync(StateHasChanged); })">
 		Set 3.1 Selected
 	</button>
 	This will select item 3.1, and implicitly its children 3.1.1 and 3.1.2. The parent (item 3) will also turn selected, as all the children of item 3 are selected.
 	<br />
-	<button @onclick="@(() =>{ if (SelectedValues.Contains("3.1.1")) {return;} SelectedValues.Add("3.1.1");++version; InvokeAsync(StateHasChanged); })">
+	<button @onclick="@(() =>{ if (SelectedValues.Contains("3.1.1")) {return;} SelectedValues.Add("3.1.1");tv.RefreshSelection(); InvokeAsync(StateHasChanged); })">
 		Set 3.1.1 Selected
 	</button>
 	This will select item 3.1.1. Its parent (3.1) will go to indeterminate state, as one element (3.1.1) is selected, and another isn't (3.1.2). This will also influence the parent of 3.1 (which is 3), to go into indeterminate state.
@@ -52,14 +52,14 @@ else
 
 
 @code {
+	// Modifications to the selection from beyond the TreeView (e.g. the buttons) require notifying the treeview to refresh.
+	private TreeView<string> tv;
 	protected override void OnInitialized()
 	{
 		SelectedValues = SelectionStateProvider.SelectedValues;
 		base.OnInitialized();
 	}
 	private string selectedItem;
-	// Modifications to the selection from beyond the TreeView (e.g. buttons below) require rerendering the treeview. 
-	private int version;
 	private List<string> SelectedValues = new List<string>
 	{
 		"3.1.1"
