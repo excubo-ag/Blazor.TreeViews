@@ -1,0 +1,51 @@
+﻿@page "/virtualized_get_children"
+<SourceCodeLink Repository="Blazor.TreeViews" Page="@nameof(VirtualizedByGetChildrenFunction)" />
+
+<TreeView Items="Nested" GetChildren="(item) => item.Children" Virtualize>
+    <ItemTemplate>
+        @context.Item.Self
+    </ItemTemplate>
+</TreeView>
+
+@code {
+    private static readonly List<Item> AllItems = new List<Item>
+{
+        new Item
+        {
+            Self = "1",
+            Children = Enumerable.Range(1, 10000).Select(i => new Item { Self = "1." + i }).ToList()
+        },
+        new Item
+        {
+            Self = "2"
+        },
+        new Item
+        {
+            Self = "3",
+            Children = new List<Item>
+            {
+                new Item
+                {
+                    Self = "3.1",
+                    Children = new List<Item>
+                    {
+                        new Item
+                        {
+                            Self = "3.1.1"
+                        },
+                        new Item
+                        {
+                            Self = "3.1.2"
+                        }
+                    }
+                },
+            }
+        }
+    };
+    private class Item
+    {
+        public string Self { get; set; }
+        public List<Item> Children { get; set; }
+    }
+    private List<Item> Nested = AllItems.ToList();
+}
