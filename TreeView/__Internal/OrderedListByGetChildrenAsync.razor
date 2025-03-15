@@ -1,18 +1,35 @@
 ﻿@typeparam T
 @inherits OrderedListAsyncBase<T>
 
+@{
+    RenderFragment<RenderFragment<ChildItem>> container = Virtualize
+        ? (child) =>
+            @<Virtualize Items=childItems Context="item" ItemSize=TreeViewAsync.ItemSize>
+                @child(item)
+            </Virtualize>
+        : (child) =>
+            @<text>
+                @foreach (ChildItem item in childItems)
+                {
+                    @child(item)
+                }
+             </text>;
+}
+
 <OrderedList Collapsed="Collapsed" Class="@Class">
-     @foreach (var item in childItems)
-     {
-         <ListItem @key="item.Value" Context="ChildCollapsed" Item="item.Value" Level="Level" LoadingChild="item.LoadingChildren" HasChildren="item.HasChildren">
-              @if (!ChildCollapsed)
-              {
-                  <OrderedListByGetChildrenAsync Level="Level + 1"
-                                                 Collapsed="ChildCollapsed"
-                                                 Parental="item.Value" GetChildrenAsync="GetChildrenAsync" Loading="(loading) => item.LoadingChildren = loading"/>
-              }
-         </ListItem>
-     }
+    @container((item) => 
+    @<ListItem @key="item.Value" Context="ChildCollapsed" Item="item.Value" Level="Level" LoadingChild="item.LoadingChildren" HasChildren="item.HasChildren">
+        @if (!ChildCollapsed)
+        {
+            <OrderedListByGetChildrenAsync 
+                Level="Level + 1"
+                Collapsed="ChildCollapsed"
+                Parental="item.Value" 
+                GetChildrenAsync="GetChildrenAsync"
+                Loading="(loading) => item.LoadingChildren = loading"
+                Virtualize=Virtualize />
+        }
+    </ListItem>)
 </OrderedList>
 
 @code {
