@@ -13,5 +13,6 @@ namespace Excubo.Blazor.TreeViews.__Internal
         protected string Class => TreeViewAsync?.ListClass;
         [Parameter] public int Level { get; set; }
         [Parameter] public bool Collapsed { get; set; }
+        [Parameter] public bool Virtualize { get; set; }
     }
 }
