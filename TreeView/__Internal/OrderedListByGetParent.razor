@@ -2,21 +2,40 @@
 @inherits OrderedListBase<T>
 
 <OrderedList Collapsed="Collapsed" Class="@Class">
-    @foreach (var item in SortBy(Parental))
-    {
-        var sub_items = FilterBy(Remaining.Where(i => GetParent(i)?.Equals(item) == true)).ToList();
-        <ListItem @key="item" Context="ChildCollapsed" Item="item" Level="Level" HasChildren="sub_items.Any()">
-            @if (sub_items.Any())
-            {
-                <OrderedListByGetParent Level="Level + 1"
-                                        Collapsed="ChildCollapsed"
-                                        Parental="sub_items" Remaining="Remaining.Where(i => GetParent(i)?.Equals(item) != true).ToList()" GetParent="GetParent" />
-            }
-        </ListItem>
-    }
+	@{
+		RenderFragment<RenderFragment<T>> container = Virtualize
+			? (child) => 
+			@<Virtualize Items=SortBy(Parental).ToList() Context="item" ItemSize=TreeView.ItemSize>
+				@child(item)
+			</Virtualize>
+			: (child) => 
+			@<text>
+				@foreach (var item in SortBy(Parental))
+				{
+					@child(item)
+				}
+			</text>;
+	}
+	@container((item) => 
+	{
+		var sub_items = FilterBy(Remaining.Where(i => GetParent(i)?.Equals(item) == true)).ToList();
+		return 
+		@<ListItem @key="item" Context="ChildCollapsed" Item="item" Level="Level" HasChildren="sub_items.Any()">
+			@if (sub_items.Any())
+			{
+				<OrderedListByGetParent 
+					Level="Level + 1"
+					Collapsed="ChildCollapsed"
+					Parental="sub_items"
+					Remaining="Remaining.Where(i => GetParent(i)?.Equals(item) != true).ToList()"
+					GetParent="GetParent"
+					Virtualize=Virtualize/>
+			}
+		</ListItem>;
+	})
 </OrderedList>
 @code {
-    [Parameter] public List<T> Parental { get; set; }
-    [Parameter] public List<T> Remaining { get; set; }
-    [Parameter] public Func<T, T> GetParent { get; set; }
+	[Parameter] public List<T> Parental { get; set; }
+	[Parameter] public List<T> Remaining { get; set; }
+	[Parameter] public Func<T, T> GetParent { get; set; }
 }
