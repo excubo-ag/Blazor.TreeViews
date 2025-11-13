@@ -1,0 +1,40 @@
+/* _content/Excubo.Blazor.TreeViews/Item.razor.rz.scp.css */
+
+.default-tree-view-ul[b-8xwopwy2jz] {
+    list-style-type: none;
+    padding-inline-start: .5em;
+}
+/* _content/Excubo.Blazor.TreeViews/MarkupTreeView.razor.rz.scp.css */
+
+.default-tree-view-ul[b-8vqve33rby] {
+    list-style-type: none;
+    padding-inline-start: .5em;
+}
+/* _content/Excubo.Blazor.TreeViews/__Internal/ListItem.razor.rz.scp.css */
+
+
+.excubo-blazor-treeview-item svg path[b-gisr9w24ma] {
+    stroke: black;
+    fill: transparent;
+    stroke-width: 2;
+}
+
+.excubo-blazor-treeview-item-disabled svg path[b-gisr9w24ma] {
+    stroke: gray;
+}
+
+.excubo-blazor-treeview-item-nochildren svg path[b-gisr9w24ma] {
+    visibility: hidden;
+}
+
+.excubo-blazor-treeview-item-expanded[b-gisr9w24ma] {
+}
+
+.excubo-blazor-treeview-item-collapsed[b-gisr9w24ma] {
+}
+/* _content/Excubo.Blazor.TreeViews/__Internal/OrderedList.razor.rz.scp.css */
+
+.default-tree-view-ul[b-1jfzi58ngy] {
+    list-style-type: none;
+    padding-inline-start: .5em;
+}
